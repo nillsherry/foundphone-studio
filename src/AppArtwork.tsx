@@ -734,7 +734,7 @@ function DrawnArtwork({ id, date }: { id: string; date?: string }) {
         fontWeight="800"
         fill="white"
       >
-        小红书
+        小紅書
       </text>
     );
   } else if (id === "netease") {
@@ -810,7 +810,7 @@ function DrawnArtwork({ id, date }: { id: string; date?: string }) {
         fontWeight="800"
         fill="#181818"
       >
-        外卖
+        外賣
       </text>
     );
   } else if (id === "forum") {

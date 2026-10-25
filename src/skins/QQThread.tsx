@@ -16,7 +16,7 @@ import "./qq-detail.css";
 export function QQThread(p: Props) {
   const [panel, setPanel] = useState("");
   const messages = p.items.filter(
-    (i) => i.title === p.thread && i.folder !== "空间" && i.kind !== "post",
+    (i) => i.title === p.thread && i.folder !== "空間" && i.kind !== "post",
   );
   const read = (i: (typeof messages)[number]) =>
     p.creator || i.password ? p.onItem(i) : p.onRead(i.id);
@@ -77,11 +77,11 @@ export function QQThread(p: Props) {
                                 /^\d+(\.\d+)?$/.test(i.body) ? i.body : "—",
                               )}
                             </strong>
-                            <p>转账</p>
+                            <p>轉賬</p>
                           </div>
                         </div>
                         <footer>
-                          {meta(i, "transferStatus", "转账记录")}
+                          {meta(i, "transferStatus", "轉賬記錄")}
                           <small>QQ支付</small>
                         </footer>
                       </>
@@ -108,16 +108,16 @@ export function QQThread(p: Props) {
             </div>
           );
         })}
-        {!messages.length && <p className="qq-thread-empty">暂无消息</p>}
+        {!messages.length && <p className="qq-thread-empty">暫無消息</p>}
       </div>
       <div className="qq-native-composer">
         <NativeComposer creator={p.creator} onAdd={p.onAdd} />
         <div>
           {[
-            [Mic, "语音"],
-            [Image, "图片"],
-            [Camera, "相机"],
-            [Video, "视频"],
+            [Mic, "語音"],
+            [Image, "圖片"],
+            [Camera, "相機"],
+            [Video, "視頻"],
             [Smile, "表情"],
             [Plus, "更多"],
           ].map(([Icon, label]) => {
@@ -161,16 +161,16 @@ export function QQThread(p: Props) {
                     <Media item={i} />
                     <span>
                       {i.kind === "audio"
-                        ? "语音"
+                        ? "語音"
                         : i.kind === "image"
-                          ? "图片"
-                          : "视频"}
+                          ? "圖片"
+                          : "視頻"}
                     </span>
                   </button>
                 ))}
               {!messages.some((i) =>
                 ["image", "audio", "video"].includes(i.kind),
-              ) && <p>暂无内容</p>}
+              ) && <p>暫無內容</p>}
             </div>
           )}
         </div>

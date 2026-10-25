@@ -570,6 +570,23 @@
   color: #f0e6ff;
   text-shadow: 0 1px 3px #0008;
 }
+
+/* 东纶宇宙壁纸：锁屏用超级赛亚人，桌面用自拍图 */
+.ios18 .wallpaper-donglun {
+  background: #1a0a2e url("wallpapers/homescreen.webp") center/cover no-repeat;
+}
+.ios18 .wallpaper-donglun.is-locked {
+  background: #201947 url("wallpapers/lockscreen.webp") center/cover no-repeat;
+}
+.ios18 .wallpaper-donglun .wallpaper-orb {
+  display: none;
+}
+.ios18 .wallpaper-donglun:not(.in-app) .status-bar,
+.ios18 .wallpaper-donglun .app-name,
+.ios18 .wallpaper-donglun .app-icon-label {
+  color: #fff;
+  text-shadow: 0 1px 4px #0008;
+}
 /* Reference #11, normalized from 1206 × 2622 to 393 × 852. */
 .ios18 .system-panel.device-control {
   padding: 166px 37px 40px;

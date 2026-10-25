@@ -185,8 +185,8 @@ export function initialRuntime(w: Work): Runtime {
 export function makeItem(partial: Partial<Item> = {}): Item {
   return itemSchema.parse({
     id: uid(),
-    title: "新内容",
-    body: "在这里写下故事…",
+    title: "新內容",
+    body: "在這裡寫下故事…",
     time: "2026-09-01 08:30",
     sender: "小林",
     ...partial,

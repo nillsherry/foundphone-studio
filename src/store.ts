@@ -25,7 +25,7 @@ let saving: Promise<void> = Promise.resolve();
 export const useStudio = create<Store>((set, get) => ({
   works: [],
   work: null,
-  status: "正在加载",
+  status: "正在加載",
   past: [],
   future: [],
   error: "",
@@ -39,9 +39,9 @@ export const useStudio = create<Store>((set, get) => ({
         await db.works.put(w);
         works = [w];
       }
-      set({ works, work: works[0], status: "已保存到本机" });
+      set({ works, work: works[0], status: "已保存到本機" });
     } catch (e) {
-      set({ error: String(e), status: "存储不可用" });
+      set({ error: String(e), status: "存儲不可用" });
     }
   },
   select: (id) => {
@@ -78,10 +78,10 @@ export const useStudio = create<Store>((set, get) => ({
       .then(async () => {
         try {
           await db.works.put(w);
-          if (!pending) set({ status: "已保存到本机", error: "" });
+          if (!pending) set({ status: "已保存到本機", error: "" });
         } catch (e) {
           pending = w;
-          set({ status: "保存失败 · 点击重试", error: String(e) });
+          set({ status: "保存失敗 · 點擊重試", error: String(e) });
         }
       });
     return saving;
