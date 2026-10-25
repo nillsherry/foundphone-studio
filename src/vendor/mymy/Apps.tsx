@@ -24,6 +24,9 @@ import {
   Smile,
   Menu,
   Compass,
+  BadgeCheck,
+  RefreshCw,
+  Lock,
 } from "lucide-react";
 import type { SkinProps } from "../../AppSkins";
 import { Avatar, Media } from "../../skins/shared";
@@ -323,13 +326,17 @@ export function MymyInstagram(p: SkinProps) {
     [selected, setSelected] = useState<Item | null>(null),
     [story, setStory] = useState(0),
     [draft, setDraft] = useState(""),
-    [pop, setPop] = useState("");
+    [pop, setPop] = useState(""),
+    [dmThread, setDmThread] = useState(""),
+    [alt, setAlt] = useState(false);
   const posts = p.items.filter(
-      (i) => i.folder !== "私信" && i.meta.story !== "true",
+      (i) => i.folder !== "私信" && i.meta.story !== "true" && i.folder !== "threads",
     ),
     stories = p.items.filter((i) => i.meta.story === "true"),
     dms = p.items.filter((i) => i.folder === "私信"),
+    threadMsgs = p.items.filter((i) => i.folder === "threads"),
     active = stories[story - 1];
+  const igAvatar = posts[0]?.avatar || undefined;
   const toggle = (id: string, values: string[], set: (v: string[]) => void) =>
     set(values.includes(id) ? values.filter((v) => v !== id) : [...values, id]);
   useEffect(() => {
@@ -443,15 +450,79 @@ export function MymyInstagram(p: SkinProps) {
             <ArrowLeft />
           </button>
           <span className="igl2">
-            {selected ? "帖子" : tab === "主頁" ? "Instagram" : tab}
+            {selected
+              ? "帖子"
+              : dmThread
+                ? "炎亞綸Aaron"
+                : alt
+                  ? "小號"
+                  : tab === "主頁"
+                    ? "Instagram"
+                    : tab}
           </span>
+          <button
+            aria-label={alt ? "切換回主帳號" : "切換帳號"}
+            onClick={() => {
+              setAlt(!alt);
+              setTab("主頁");
+              setDmThread("");
+            }}
+          >
+            <RefreshCw />
+          </button>
           <button aria-label="打開私信" onClick={() => setTab("私信")}>
             <Send />
           </button>
         </header>
         <div className="igb">
-          {selected && post(selected)}
-          {!selected && tab === "主頁" && (
+          {dmThread && (
+            <div className="ig-dm">
+              <div className="ig-dm-head">
+                <Avatar name="炎亞綸Aaron" src={threadMsgs[0]?.avatar} />
+                <b>炎亞綸Aaron</b>
+              </div>
+              {threadMsgs.map((m) => (
+                <div
+                  key={m.id}
+                  className={`ig-dm-msg ${m.sender === "汪東城" ? "out" : ""}`}
+                >
+                  <Avatar name={m.sender} src={m.avatar} />
+                  <span>{m.body}</span>
+                </div>
+              ))}
+              <p className="ig-dm-note">你正以「布丁」身份回覆</p>
+            </div>
+          )}
+          {!dmThread && selected && post(selected)}
+          {!dmThread && !selected && alt && (
+            <div className="igp-profile alt">
+              <div className="pf">
+                <Avatar name="小號" />
+                <div className="ps">
+                  <div>
+                    <b>—</b>
+                    <small>帖子</small>
+                  </div>
+                  <div>
+                    <b>—</b>
+                    <small>粉絲</small>
+                  </div>
+                  <div>
+                    <b>—</b>
+                    <small>關注</small>
+                  </div>
+                </div>
+              </div>
+              <p className="pn">小號</p>
+              <p className="ig-bio muted">暫無個人簡介</p>
+              <div className="ptab">
+                <div className="on">
+                  <Grid />
+                </div>
+              </div>
+            </div>
+          )}
+          {!dmThread && !selected && !alt && tab === "主頁" && (
             <>
               <div className="sts">
                 {stories.map((s, n) => (
@@ -473,26 +544,52 @@ export function MymyInstagram(p: SkinProps) {
               {!posts.length && <Blank />}
             </>
           )}
-          {!selected && tab === "個人主頁" && (
-            <>
+          {!dmThread && !selected && !alt && tab === "個人主頁" && (
+            <div className="igp-profile">
               <div className="pf">
-                <Avatar name={p.owner || "機主"} />
+                <Avatar name="汪東城" src={igAvatar} />
                 <div className="ps">
                   <div>
-                    <b>{posts.length}</b>
+                    <b>2269</b>
                     <small>帖子</small>
                   </div>
                   <div>
-                    <b>—</b>
+                    <b>50.1萬</b>
                     <small>粉絲</small>
                   </div>
                   <div>
-                    <b>—</b>
+                    <b>3099</b>
                     <small>關注</small>
                   </div>
                 </div>
               </div>
-              <p className="pn">{p.owner}</p>
+              <p className="pn">
+                jirorocker <BadgeCheck size={13} className="ig-verified" />
+              </p>
+              <p className="ig-bio">
+                JIRO 汪東城 Coser
+                <br />
+                FB: 汪東城Jiro
+                <br />
+                抖音號: JIRO_ROCK
+                <br />
+                商務聯絡: 綠紛 0935457867
+                <br />
+                工作聯繫: kimuragreen@gmail.com
+                <br />
+                weibo.cn/saiyanjiro
+                <br />@ jirorocker
+              </p>
+              <div className="ig-highlights">
+                {stories.map((s) => (
+                  <button key={s.id} onClick={() => openStory(stories.indexOf(s))}>
+                    <span className="ig-hl-cover">
+                      <Media item={s} />
+                    </span>
+                    <small>{s.title}</small>
+                  </button>
+                ))}
+              </div>
               <div className="ptab">
                 <div className="on">
                   <Grid />
@@ -505,23 +602,39 @@ export function MymyInstagram(p: SkinProps) {
                   </button>
                 ))}
               </div>
-            </>
+            </div>
           )}
-          {!selected && tab === "私信" && (
+          {!dmThread && !selected && tab === "私信" && (
             <>
-              {dms.map((i) => (
-                <button className="kzkr" key={i.id} onClick={() => openPost(i)}>
-                  <Avatar name={i.sender} src={i.avatar} />
-                  <span className="kzkn">
-                    <b>{i.title}</b>
-                    <small>{i.body}</small>
-                  </span>
-                </button>
-              ))}
+              {dms.map((i) =>
+                i.meta.locked ? (
+                  <div className="kzkr locked" key={i.id}>
+                    <Avatar name={i.sender} src={i.avatar} />
+                    <span className="kzkn">
+                      <b>
+                        {i.title} <Lock size={10} className="ig-lock" />
+                      </b>
+                      <small className="ig-gray">{i.body}</small>
+                    </span>
+                  </div>
+                ) : (
+                  <button
+                    className="kzkr"
+                    key={i.id}
+                    onClick={() => setDmThread(i.title)}
+                  >
+                    <Avatar name={i.sender} src={i.avatar} />
+                    <span className="kzkn">
+                      <b>{i.title}</b>
+                      <small>{i.body}</small>
+                    </span>
+                  </button>
+                ),
+              )}
               {!dms.length && <Blank />}
             </>
           )}
-          {!selected && tab === "搜索" && (
+          {!dmThread && !selected && tab === "搜索" && (
             <>
               <input
                 className="mymy-search"
@@ -537,16 +650,33 @@ export function MymyInstagram(p: SkinProps) {
           )}
         </div>
         <nav className="mymy-ig-nav">
-          {[Home, Search, Send, User].map((Icon, n) => (
+          <button
+            aria-label="主頁"
+            aria-pressed={!selected && tab === "主頁"}
+            onClick={() => {
+              setSelected(null);
+              setDmThread("");
+              setAlt(false);
+              setTab("主頁");
+            }}
+          >
+            {tab === "主頁" && !alt ? (
+              <Avatar name="汪東城" src={igAvatar} />
+            ) : (
+              <Home />
+            )}
+          </button>
+          {[Search, Send, User].map((Icon, n) => (
             <button
               key={n}
-              aria-label={["主頁", "搜索", "私信", "個人主頁"][n]}
+              aria-label={["搜索", "私信", "個人主頁"][n]}
               aria-pressed={
-                !selected && tab === ["主頁", "搜索", "私信", "個人主頁"][n]
+                !selected && !alt && tab === ["搜索", "私信", "個人主頁"][n]
               }
               onClick={() => {
                 setSelected(null);
-                setTab(["主頁", "搜索", "私信", "個人主頁"][n]);
+                setDmThread("");
+                setTab(["搜索", "私信", "個人主頁"][n]);
               }}
             >
               <Icon />

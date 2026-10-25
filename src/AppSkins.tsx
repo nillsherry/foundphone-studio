@@ -1,8 +1,10 @@
 import { NativeComposer } from "./DeviceSystem";
 import { useSkinState } from "./skinState";
-import { Fragment, useState } from "react";
+import { aiReply } from "./aiReplies";
+import { Fragment, useRef, useState } from "react";
 import {
   ChevronLeft,
+  ChevronRight,
   Plus,
   CirclePlus,
   Search,
@@ -10,6 +12,13 @@ import {
   Users,
   Compass,
   User,
+  UserPlus,
+  Tag,
+  Newspaper,
+  Server,
+  Briefcase,
+  Building,
+  Bell,
   Camera,
   Phone,
   Video,
@@ -191,6 +200,14 @@ export function WeChatSkin(p: SkinProps) {
     "readThreads",
     [],
   );
+  const contactRefs = useRef<Record<string, HTMLDivElement | null>>({});
+  const [freeDraft, setFreeDraft] = useState("");
+  const [freeMsgs, setFreeMsgs] = useState<string[]>([]);
+  const nowStr = () => {
+    const d = new Date();
+    const pad = (n: number) => String(n).padStart(2, "0");
+    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  };
   const conversations = [
     ...new Set(
       p.items
@@ -222,6 +239,32 @@ export function WeChatSkin(p: SkinProps) {
   const posts = p.items.filter(
     (i) => i.folder === "朋友圈" || i.kind === "post",
   );
+  const sendFree = () => {
+    const txt = freeDraft.trim();
+    if (!txt || !p.thread) return;
+    const peers = [
+      ...new Set(
+        p.items
+          .filter((i) => i.title === p.thread)
+          .map((i) => i.sender)
+          .filter((s) => s !== p.owner),
+      ),
+    ];
+    const peer = peers.length
+      ? peers[Math.floor(Math.random() * peers.length)]
+      : p.thread;
+    const append = (row: string) =>
+      setFreeMsgs((prev) => [...prev, row]);
+    append(`${p.thread!}|汪東城|1|${txt}`);
+    setFreeDraft("");
+    const reply = aiReply(peer, txt);
+    if (reply) {
+      setTimeout(
+        () => append(`${p.thread!}|${peer}|0|${reply}`),
+        500 + Math.floor(Math.random() * 500),
+      );
+    }
+  };
   return (
     <div
       className="wechat-ui independent-skin"
@@ -324,13 +367,64 @@ export function WeChatSkin(p: SkinProps) {
       ) : p.thread ? (
         <>
           <MessageList
-            items={p.items.filter((i) => i.title === p.thread)}
+            items={[
+              ...p.items.filter((i) => i.title === p.thread),
+              ...freeMsgs
+                .filter((r) => r.startsWith(p.thread + "|"))
+                .map((row, n) => {
+                  const [, sender, out, ...rest] = row.split("|");
+                  return {
+                    id: `free-${n}`,
+                    title: p.thread!,
+                    sender,
+                    body: rest.join("|"),
+                    kind: "text" as const,
+                    time: nowStr(),
+                    outgoing: out === "1",
+                    richText: "",
+                    meta: {},
+                    media: "",
+                    hidden: false,
+                    comments: [] as string[],
+                    avatar:
+                      sender === p.owner
+                        ? undefined
+                        : p.items.find((i) => i.sender === sender)?.avatar,
+                  } as Item;
+                }),
+            ]}
             creator={p.creator}
             onItem={p.onItem}
             onRead={p.onRead}
             showSelf={false}
           />
-          <Compose creator={p.creator} onAdd={p.onAdd} />
+          {p.creator ? (
+            <Compose creator={p.creator} onAdd={p.onAdd} />
+          ) : (
+            <div className="skin-compose">
+              <Mic size={20} />
+              <input
+                className="free-input"
+                aria-label="自由對話輸入"
+                value={freeDraft}
+                placeholder="輸入消息…"
+                onChange={(e) => setFreeDraft(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    sendFree();
+                  }
+                }}
+              />
+              <button
+                className="free-send"
+                aria-label="發送"
+                onClick={sendFree}
+              >
+                <Send size={20} />
+              </button>
+            </div>
+          )}
         </>
       ) : moments ? (
         <div className="wx-moments">
@@ -421,33 +515,89 @@ export function WeChatSkin(p: SkinProps) {
             </>
           ) : tab === "通訊錄" ? (
             <>
-              <div className="wx-section-label">聯繫人</div>
-              {Object.keys(groupedContacts)
-                .sort()
-                .map((letter) => (
-                  <Fragment key={letter}>
-                    <div className="wx-contact-index">{letter}</div>
-                    {groupedContacts[letter].map((c) => (
-                      <button
-                        key={c}
-                        className="wx-contact"
-                        onClick={() => {
-                          const item = chatItems.find((i) => i.sender === c);
-                          if (item) {
-                            p.onThread(item.title);
-                            p.onRead(item.title);
-                          }
-                        }}
+              <div className="wx-contact-entries">
+                {[
+                  [UserPlus, "新的朋友", "#fa9d3b"],
+                  [MessageCircle, "僅聊天的朋友", "#fa9d3b"],
+                  [Users, "群聊", "#07c160"],
+                  [Tag, "標籤", "#3f7ef3"],
+                  [Newspaper, "公眾號", "#3f7ef3"],
+                  [Server, "服務號", "#5b8def"],
+                  [Briefcase, "企業微信聯繫人", "#5b8def"],
+                  [Building, "我的企業", "#07c160"],
+                  [Bell, "企業微信通知", "#5b8def"],
+                ].map(([Icon, label, color]) => {
+                  const Glyph = Icon as typeof Users;
+                  return (
+                    <button
+                      key={String(label)}
+                      className="wx-contact-entry"
+                      onClick={() => setUtility(String(label))}
+                    >
+                      <span
+                        className="wx-entry-ic"
+                        style={{ background: String(color) }}
                       >
-                        <Avatar
-                          name={c}
-                          src={chatItems.find((i) => i.sender === c)?.avatar}
-                        />
-                        {c}
-                      </button>
-                    ))}
-                  </Fragment>
+                        <Glyph size={18} />
+                      </span>
+                      <span className="wx-entry-label">{String(label)}</span>
+                      <ChevronRight size={15} className="wx-entry-arrow" />
+                    </button>
+                  );
+                })}
+              </div>
+              <div className="wx-section-label">聯繫人</div>
+              <div className="wx-contact-groups">
+                {Object.keys(groupedContacts)
+                  .sort()
+                  .map((letter) => (
+                    <div
+                      key={letter}
+                      ref={(el) => {
+                        contactRefs.current[letter] = el;
+                      }}
+                    >
+                      <div className="wx-contact-index">{letter}</div>
+                      {groupedContacts[letter].map((c) => (
+                        <button
+                          key={c}
+                          className="wx-contact"
+                          onClick={() => {
+                            const item = chatItems.find((i) => i.sender === c);
+                            if (item) {
+                              p.onThread(item.title);
+                              p.onRead(item.title);
+                            }
+                          }}
+                        >
+                          <Avatar
+                            name={c}
+                            src={chatItems.find((i) => i.sender === c)?.avatar}
+                          />
+                          <span>{c}</span>
+                        </button>
+                      ))}
+                    </div>
+                  ))}
+              </div>
+              <div className="wx-contact-rail">
+                {[
+                  "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L",
+                  "M", "N", "O", "P", "Q", "R", "S", "T", "U", "W", "X", "Y",
+                  "Z", "#",
+                ].map((l) => (
+                  <span
+                    key={l}
+                    onClick={() =>
+                      contactRefs.current[l]?.scrollIntoView({
+                        block: "start",
+                      })
+                    }
+                  >
+                    {l}
+                  </span>
                 ))}
+              </div>
             </>
           ) : tab === "發現" ? (
             <div className="wx-discover-groups">

@@ -628,3 +628,98 @@
   width: 25px;
   height: 25px;
 }
+/* IG 个人页（参考图3） */
+.mymy-ui .igp-profile { padding: 4px 0 0; }
+.mymy-ui .igp-profile.alt { opacity: 0.92; }
+.mymy-ui .igp-profile .pn {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  font-weight: 600;
+  font-size: 16px;
+}
+.mymy-ui .ig-verified { color: #3897f0; fill: #3897f0; }
+.mymy-ui .ig-bio {
+  font-size: 12.5px;
+  line-height: 1.5;
+  margin: 3px 16px 0;
+  color: #1a1a1a;
+  white-space: pre-wrap;
+}
+.mymy-ui .ig-bio.muted { color: #8a8a8a; }
+.mymy-ui .ig-highlights {
+  display: flex;
+  gap: 9px;
+  padding: 12px 12px 10px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.mymy-ui .ig-highlights button {
+  flex: none;
+  width: 62px;
+  background: none;
+  border: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.mymy-ui .ig-hl-cover {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 1px solid #d4d4d4;
+  padding: 2px;
+  background: #fff;
+}
+.mymy-ui .ig-hl-cover .catalog-media,
+.mymy-ui .ig-hl-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+.mymy-ui .ig-highlights small { font-size: 10.5px; color: #262626; }
+/* 私信对话 */
+.mymy-ui .ig-dm { padding: 10px 12px; display: flex; flex-direction: column; gap: 9px; }
+.mymy-ui .ig-dm-head {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 4px 0 8px;
+  border-bottom: 0.5px solid #ebebeb;
+}
+.mymy-ui .ig-dm-msg {
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+}
+.mymy-ui .ig-dm-msg.out { justify-content: flex-end; flex-direction: row-reverse; }
+.mymy-ui .ig-dm-msg > span {
+  background: #efefef;
+  border-radius: 16px;
+  padding: 7px 12px;
+  font-size: 13.5px;
+  max-width: 75%;
+}
+.mymy-ui .ig-dm-msg.out > span {
+  background: #3897f0;
+  color: #fff;
+}
+.mymy-ui .ig-dm-note {
+  text-align: center;
+  font-size: 10.5px;
+  color: #8a8a8a;
+  margin-top: 8px;
+}
+/* 私信锁定项 */
+.mymy-ui .kzkr.locked { cursor: default; opacity: 0.95; }
+.mymy-ui .ig-gray { color: #9a9a9a !important; font-size: 12px; }
+.mymy-ui .ig-lock { color: #9a9a9a; }
+/* nav 头像 */
+.mymy-ui .mymy-ig-nav button .catalog-avatar {
+  width: 26px;
+  height: 26px;
+}

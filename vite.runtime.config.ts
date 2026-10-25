@@ -21,7 +21,7 @@ export default defineConfig(({ command }) => ({
       workbox: {
         clientsClaim: true,
         globPatterns: ["**/*.{js,css,html,svg,json,txt,png,jpg}"],
-        maximumFileSizeToCacheInBytes: 8000000,
+        maximumFileSizeToCacheInBytes: 16000000,
       },
     }),
   ],

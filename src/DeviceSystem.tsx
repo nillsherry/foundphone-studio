@@ -124,17 +124,6 @@ export function DeviceLock({
             </p>
             <h1>{time}</h1>
           </div>
-          <div className="lock-widget-row">
-            {(work.data.weather || []).slice(0, 3).map((w, i) => (
-              <div key={w.id || i} className="lock-widget glass">
-                <small>
-                  {w.meta?.locationLabel || w.title || "天氣"}
-                </small>
-                <b>{w.meta?.temperature || "—"}°</b>
-                <span>{w.meta?.condition || ""}</span>
-              </div>
-            ))}
-          </div>
           <div className="lock-notifications">
             {work.phone.notifications && (
               <SystemNotifications
