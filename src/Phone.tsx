@@ -228,21 +228,33 @@ function PhoneRuntime({
   }, [own, creator, work.id, external, ready]);
   useEffect(() => {
     if (creator || !ready) return;
+    // 实时时钟：现实 30 分钟 = 游戏 1 天（48 倍速），24 小时制，跨日自动更新日期
+    const [sy, sm, sd] = (work.phone.date || "2026-10-26").split("-").map(Number);
+    const [sh, smin] = (work.phone.time || "03:00").split(":").map(Number);
+    const startTs = Date.UTC(sy, sm - 1, sd, sh, smin, 0);
+    const CLOCK_RATE = 48000; // 每现实秒推进的游戏毫秒数（48 秒）
     const interval = setInterval(() => {
       const previous = runtimeRef.current;
-      const next = advance(work, previous, 1000);
+      const advanced = advance(work, previous, CLOCK_RATE);
+      const ts = startTs + (advanced.elapsedMs ?? 0);
+      const d = new Date(ts);
+      const date = d.toISOString().slice(0, 10);
+      const time = `${String(d.getUTCHours()).padStart(2, "0")}:${String(
+        d.getUTCMinutes(),
+      ).padStart(2, "0")}`;
+      const next = { ...advanced, date, time };
       runtimeRef.current = next;
       const changed =
         next.time !== previous.time ||
+        next.date !== previous.date ||
         next.trace.join() !== previous.trace.join() ||
         (next.scheduled?.length ?? 0) !== (previous.scheduled?.length ?? 0) ||
-        (next.scheduled?.length ?? 0) > 0 ||
         Math.floor((next.elapsedMs ?? 0) / 5000) !==
           Math.floor((previous.elapsedMs ?? 0) / 5000);
       if (changed) update(next);
     }, 1000);
     return () => clearInterval(interval);
-  }, [creator, ready, work.id, work.updatedAt]);
+  }, [creator, ready, work.id, work.updatedAt, work.phone.date, work.phone.time]);
   const event = (event: string, target: string) => {
     if (!creator) update(dispatch(work, runtimeRef.current, event, target));
   };
@@ -989,6 +1001,7 @@ function AppContent({
               appId={app.id}
               owner={work.phone.owner}
               virtualTime={state.time}
+              virtualDate={state.date}
               ui={state.ui?.[app.id]}
               onUi={creator ? undefined : onUi}
               name={name}

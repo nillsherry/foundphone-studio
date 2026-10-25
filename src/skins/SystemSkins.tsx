@@ -409,9 +409,17 @@ export function NotesSkin(p: Props) {
   );
 }
 export function CalendarSkin(p: Props) {
-  const [month, setMonth] = useState(8),
-    [year, setYear] = useState(2026),
-    [day, setDay] = useState(1);
+  const vd = p.virtualDate || "2026-10-26";
+  const [month, setMonth] = useState(() => Number(vd.slice(5, 7)) - 1),
+    [year, setYear] = useState(() => Number(vd.slice(0, 4))),
+    [day, setDay] = useState(() => Number(vd.slice(8, 10)));
+  // 跟随当前日期自動更新（含跨日）
+  useEffect(() => {
+    if (!p.virtualDate) return;
+    setMonth(Number(p.virtualDate.slice(5, 7)) - 1);
+    setYear(Number(p.virtualDate.slice(0, 4)));
+    setDay(Number(p.virtualDate.slice(8, 10)));
+  }, [p.virtualDate]);
   const prefix = `${year}-${String(month + 1).padStart(2, "0")}`;
   const list = p.items.filter((i) =>
     i.time.startsWith(`${prefix}-${String(day).padStart(2, "0")}`),
