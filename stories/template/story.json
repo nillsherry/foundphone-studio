@@ -1,51 +1,28 @@
 {
   "scriptVersion": 1,
-  "id": "ui-test-phone-v2",
-  "title": "捡手机",
-  "description": "仅用于界面测试，不含剧情",
-  "revision": 3,
+  "id": "donglun-jiro-phone",
+  "title": "东纶宇宙 · 汪东城的手机",
+  "description": "表面上二十年互不来往、直播黑脸、拉黑CP粉。实际上手机里藏着所有没删的聊天、没取关的动态、没说出口的话。这是汪东城的手机。",
+  "revision": 5,
   "phone": {
-    "owner": "机主",
+    "owner": "汪东城",
     "date": "2026-10-25",
-    "time": "09:41",
-    "battery": 94,
+    "time": "02:17",
+    "battery": 63,
     "network": "5G",
     "wallpaper": "otaku",
-    "theme": "dark"
+    "theme": "dark",
+    "passcode": "1120"
   },
   "installedApps": [
     "appstore",
-    {
-      "id": "wechat",
-      "name": "微信",
-      "installed": true,
-      "visible": true,
-      "dock": false,
-      "folder": "",
-      "icon": ""
-    },
-    {
-      "id": "douyin",
-      "name": "抖音",
-      "installed": true,
-      "visible": true,
-      "dock": false,
-      "folder": "",
-      "icon": ""
-    },
+    "wechat",
+    "douyin",
     "phone",
     "messages",
     "contacts",
     "photos",
-    {
-      "id": "camera",
-      "name": "相机",
-      "installed": true,
-      "visible": true,
-      "dock": true,
-      "folder": "",
-      "icon": ""
-    },
+    "camera",
     "safari",
     "notes",
     "calendar",
@@ -72,396 +49,572 @@
   ],
   "contacts": [
     {
-      "id": "test-contact",
-      "name": "测试联系人",
-      "phone": "",
-      "bio": "这是一条测试内容。"
+      "id": "aaron",
+      "name": "亚纶（小号）",
+      "phone": "0900-520-1120",
+      "bio": "飞轮海时期最小的那个。备注改了八次，最后还是这个。"
+    },
+    {
+      "id": "chengr",
+      "name": "辰亦儒",
+      "phone": "0900-001-0224",
+      "bio": "老队友，和事佬。每次我俩互呛他都出来打圆场。"
+    },
+    {
+      "id": "zun",
+      "name": "吴尊",
+      "phone": "0900-002-0910",
+      "bio": "文莱人，现在基本在搞自己的事。"
+    },
+    {
+      "id": "manager",
+      "name": "经纪人-琪姐",
+      "phone": "02-2771-8866",
+      "bio": "她最常说的一句话：东哥，你能不能别再看纶先生的超话了。"
     }
   ],
   "chats": [
     {
-      "id": "test-chat-messages",
-      "app": "messages",
-      "title": "测试会话",
-      "participants": [
-        "owner",
-        "test-contact"
-      ],
-      "messages": [
-        {
-          "id": "test-message-messages",
-          "body": "这是一条测试消息。",
-          "senderId": "test-contact"
-        }
-      ]
-    },
-    {
-      "id": "test-chat-wechat",
+      "id": "chat-aaron-wechat",
       "app": "wechat",
-      "title": "测试会话",
+      "title": "亚纶",
       "participants": [
         "owner",
-        "test-contact"
+        "aaron"
       ],
       "messages": [
         {
-          "id": "test-message-wechat",
-          "body": "这是一条测试消息。",
-          "senderId": "test-contact"
+          "id": "msg-aaron-001",
+          "body": "（2026-04-22 23:41）你今天直播又黑脸了。",
+          "senderId": "aaron",
+          "time": "2026-04-22 23:41"
+        },
+        {
+          "id": "msg-aaron-002",
+          "body": "（2026-04-22 23:44）弹幕刷东纶，我不黑脸怎么办。",
+          "senderId": "owner",
+          "time": "2026-04-22 23:44"
+        },
+        {
+          "id": "msg-aaron-003",
+          "body": "（2026-04-22 23:45）那你就真拉黑？",
+          "senderId": "aaron",
+          "time": "2026-04-22 23:45"
+        },
+        {
+          "id": "msg-aaron-004",
+          "body": "（2026-04-22 23:46）我没拉黑你。",
+          "senderId": "owner",
+          "time": "2026-04-22 23:46"
+        },
+        {
+          "id": "msg-aaron-005",
+          "body": "（2026-04-22 23:47）我知道。我小号看你朋友圈了。",
+          "senderId": "aaron",
+          "time": "2026-04-22 23:47"
+        },
+        {
+          "id": "msg-aaron-006",
+          "body": "（2026-04-27 01:13）我发长文了。你看了吗。",
+          "senderId": "aaron",
+          "time": "2026-04-27 01:13"
+        },
+        {
+          "id": "msg-aaron-007",
+          "body": "（2026-04-27 01:15）看了。",
+          "senderId": "owner",
+          "time": "2026-04-27 01:15"
+        },
+        {
+          "id": "msg-aaron-008",
+          "body": "（2026-04-27 01:16）你骂我那段我看了三遍。",
+          "senderId": "owner",
+          "time": "2026-04-27 01:16"
+        },
+        {
+          "id": "msg-aaron-009",
+          "body": "（2026-04-27 01:18）……我没骂你。我骂的是当年的我们。",
+          "senderId": "aaron",
+          "time": "2026-04-27 01:18"
+        },
+        {
+          "id": "msg-aaron-010",
+          "body": "（2026-04-27 01:20）你要结婚了。",
+          "senderId": "owner",
+          "time": "2026-04-27 01:20"
+        },
+        {
+          "id": "msg-aaron-011",
+          "body": "（2026-04-27 01:21）嗯。",
+          "senderId": "aaron",
+          "time": "2026-04-27 01:21"
+        },
+        {
+          "id": "msg-aaron-012",
+          "body": "（2026-04-27 01:22）恭喜。",
+          "senderId": "owner",
+          "time": "2026-04-27 01:22"
+        },
+        {
+          "id": "msg-aaron-013",
+          "body": "（2026-04-27 01:23）你就说这个？",
+          "senderId": "aaron",
+          "time": "2026-04-27 01:23"
+        },
+        {
+          "id": "msg-aaron-014",
+          "body": "（2026-04-27 01:25）不然呢。亚纶，都二十年了。",
+          "senderId": "owner",
+          "time": "2026-04-27 01:25"
+        },
+        {
+          "id": "msg-aaron-015",
+          "body": "（2026-05-02 22:08）南京音乐节，我在台下。",
+          "senderId": "aaron",
+          "time": "2026-05-02 22:08"
+        },
+        {
+          "id": "msg-aaron-016",
+          "body": "（2026-05-02 22:10）我知道。我看到你了。",
+          "senderId": "owner",
+          "time": "2026-05-02 22:10"
+        },
+        {
+          "id": "msg-aaron-017",
+          "body": "（2026-05-02 22:11）你看到了？你还跟我挥手？",
+          "senderId": "aaron",
+          "time": "2026-05-02 22:11"
+        },
+        {
+          "id": "msg-aaron-018",
+          "body": "（2026-05-02 22:12）我那是跟全场挥手。",
+          "senderId": "owner",
+          "time": "2026-05-02 22:12"
+        },
+        {
+          "id": "msg-aaron-019",
+          "body": "（2026-05-02 22:13）骗子。你看的方向是我这边。",
+          "senderId": "aaron",
+          "time": "2026-05-02 22:13"
+        },
+        {
+          "id": "msg-aaron-020",
+          "body": "（2026-10-25 01:58）你理发店今天又上热搜了。我没去。",
+          "senderId": "aaron",
+          "time": "2026-10-25 01:58"
+        },
+        {
+          "id": "msg-aaron-021",
+          "body": "（2026-10-25 02:01）我知道。琪姐跟我说了。你去没去我心里有数。",
+          "senderId": "owner",
+          "time": "2026-10-25 02:01"
+        },
+        {
+          "id": "msg-aaron-022",
+          "body": "（2026-10-25 02:02）那你怎么不拆穿我。",
+          "senderId": "aaron",
+          "time": "2026-10-25 02:02"
+        },
+        {
+          "id": "msg-aaron-023",
+          "body": "（2026-10-25 02:05）亚纶。我们都这个年纪了。",
+          "senderId": "owner",
+          "time": "2026-10-25 02:05"
+        },
+        {
+          "id": "msg-aaron-024",
+          "body": "（2026-10-25 02:06）你结婚以后，我们别再这样了。",
+          "senderId": "owner",
+          "time": "2026-10-25 02:06"
+        },
+        {
+          "id": "msg-aaron-025",
+          "body": "（2026-10-25 02:07）……好。",
+          "senderId": "aaron",
+          "time": "2026-10-25 02:07"
+        },
+        {
+          "id": "msg-aaron-026",
+          "body": "（对方正在输入...）",
+          "senderId": "aaron",
+          "time": "2026-10-25 02:17"
         }
       ]
     },
     {
-      "id": "test-chat-qq",
-      "app": "qq",
-      "title": "测试会话",
+      "id": "chat-group-fahrenheit",
+      "app": "wechat",
+      "title": "飞轮海老头群（4）",
       "participants": [
         "owner",
-        "test-contact"
+        "chengr",
+        "zun",
+        "manager"
       ],
       "messages": [
         {
-          "id": "test-message-qq",
-          "body": "这是一条测试消息。",
-          "senderId": "test-contact"
-        }
-      ]
-    },
-    {
-      "id": "test-chat-line",
-      "app": "line",
-      "title": "测试会话",
-      "participants": [
-        "owner",
-        "test-contact"
-      ],
-      "messages": [
+          "id": "msg-group-001",
+          "body": "（2026-04-27 08:32）东哥，纶哥那个长文你看了吗？",
+          "senderId": "chengr",
+          "time": "2026-04-27 08:32"
+        },
         {
-          "id": "test-message-line",
-          "body": "这是一条测试消息。",
-          "senderId": "test-contact"
+          "id": "msg-group-002",
+          "body": "（2026-04-27 08:33）看了。",
+          "senderId": "owner",
+          "time": "2026-04-27 08:33"
+        },
+        {
+          "id": "msg-group-003",
+          "body": "（2026-04-27 08:34）你俩能不能别让我两头为难。",
+          "senderId": "zun",
+          "time": "2026-04-27 08:34"
+        },
+        {
+          "id": "msg-group-004",
+          "body": "（2026-04-27 08:35）尊，这事儿跟你没关系。你带你的娃。",
+          "senderId": "owner",
+          "time": "2026-04-27 08:35"
+        },
+        {
+          "id": "msg-group-005",
+          "body": "（2026-04-27 08:36）琪姐说这周媒体会追着问。东哥你准备好口径。",
+          "senderId": "manager",
+          "time": "2026-04-27 08:36"
+        },
+        {
+          "id": "msg-group-006",
+          "body": "（2026-04-27 08:37）知道了。统一说：多年同事，各自安好。",
+          "senderId": "owner",
+          "time": "2026-04-27 08:37"
         }
       ]
     }
   ],
   "content": {
-    "phone": [
-      {
-        "id": "test-item-phone",
-        "title": "测试内容",
-        "body": "这是一条测试内容。",
-        "sender": "测试用户",
-        "kind": "text",
-        "meta": {}
-      }
-    ],
-    "contacts": [
-      {
-        "id": "test-item-contacts",
-        "title": "测试内容",
-        "body": "这是一条测试内容。",
-        "sender": "测试用户",
-        "kind": "text",
-        "meta": {}
-      }
-    ],
-    "photos": [
-      {
-        "id": "test-item-photos",
-        "title": "测试内容",
-        "body": "这是一条测试内容。",
-        "sender": "测试用户",
-        "kind": "text",
-        "meta": {}
-      }
-    ],
-    "camera": [
-      {
-        "id": "test-item-camera",
-        "title": "测试内容",
-        "body": "这是一条测试内容。",
-        "sender": "测试用户",
-        "kind": "text",
-        "meta": {}
-      }
-    ],
-    "safari": [
-      {
-        "id": "test-item-safari",
-        "title": "测试内容",
-        "body": "这是一条测试内容。",
-        "sender": "测试用户",
-        "kind": "text",
-        "meta": {}
-      }
-    ],
     "notes": [
       {
-        "id": "test-item-notes",
-        "title": "测试内容",
-        "body": "这是一条测试内容。",
-        "sender": "测试用户",
+        "id": "note-memories-2006",
+        "title": "2006 冬天",
         "kind": "text",
-        "meta": {}
-      }
-    ],
-    "calendar": [
+        "folder": "不能删的",
+        "body": "他手又冰了。团综录到后半夜，我把他手塞进我口袋。镜头没拍，但导播笑了。",
+        "time": "2026-04-01 03:22",
+        "sender": "汪东城",
+        "hidden": true,
+        "password": "1120"
+      },
       {
-        "id": "test-item-calendar",
-        "title": "测试内容",
-        "body": "这是一条测试内容。",
-        "sender": "测试用户",
+        "id": "note-memories-2007",
+        "title": "断背山采访",
         "kind": "text",
-        "meta": {}
-      }
-    ],
-    "clock": [
+        "folder": "不能删的",
+        "body": "他当着镜头说想跟我拍断背山。我当时笑了一下，没接话。回去以后失眠了三天。",
+        "time": "2026-04-01 03:25",
+        "sender": "汪东城",
+        "hidden": true,
+        "password": "1120"
+      },
       {
-        "id": "test-item-clock",
-        "title": "测试内容",
-        "body": "这是一条测试内容。",
-        "sender": "测试用户",
+        "id": "note-memories-2010",
+        "title": "死神少女",
         "kind": "text",
-        "meta": {}
-      }
-    ],
-    "reminders": [
+        "folder": "不能删的",
+        "body": "他演的那个角色叫沈奇。我知道他在写谁。我看完了全集，没敢评论。",
+        "time": "2026-04-01 03:28",
+        "sender": "汪东城",
+        "hidden": true,
+        "password": "1120"
+      },
       {
-        "id": "test-item-reminders",
-        "title": "测试内容",
-        "body": "这是一条测试内容。",
-        "sender": "测试用户",
+        "id": "note-memories-2011",
+        "title": "解散后台",
         "kind": "text",
-        "meta": {}
-      }
-    ],
-    "weather": [
+        "folder": "不能删的",
+        "body": "他喝多了，在后台抓着我袖子说'你为什么不躲我'。我没回答。第二天报纸写我们零交流。",
+        "time": "2026-04-01 03:31",
+        "sender": "汪东城",
+        "hidden": true,
+        "password": "1120"
+      },
       {
-        "id": "test-item-weather",
-        "title": "测试内容",
-        "body": "这是一条测试内容。",
-        "sender": "测试用户",
+        "id": "note-2026-april",
+        "title": "2026.04.22 直播",
         "kind": "text",
-        "meta": {}
-      }
-    ],
-    "calculator": [
+        "folder": "不能删的",
+        "body": "弹幕刷东纶。我黑了脸。下播以后我一个人在车里坐了四十分钟。琪姐以为我生气，其实我是哭了。",
+        "time": "2026-04-22 23:59",
+        "sender": "汪东城",
+        "hidden": true,
+        "password": "1120"
+      },
       {
-        "id": "test-item-calculator",
-        "title": "测试内容",
-        "body": "这是一条测试内容。",
-        "sender": "测试用户",
+        "id": "note-draft-unsent",
+        "title": "草稿（没发出去）",
         "kind": "text",
-        "meta": {}
-      }
-    ],
-    "settings": [
-      {
-        "id": "test-item-settings",
-        "title": "测试内容",
-        "body": "这是一条测试内容。",
-        "sender": "测试用户",
-        "kind": "text",
-        "meta": {}
+        "folder": "不能删的",
+        "body": "亚纶，结婚快乐。我喝了点酒。其实我想说的不是这个。我想说——",
+        "time": "2026-04-28 02:14",
+        "sender": "汪东城",
+        "hidden": true,
+        "password": "1120"
       }
     ],
     "weibo": [
       {
-        "id": "test-item-weibo",
-        "title": "测试内容",
-        "body": "这是一条测试内容。",
-        "sender": "测试用户",
-        "kind": "text",
-        "meta": {}
-      }
-    ],
-    "redbook": [
-      {
-        "id": "test-item-redbook",
-        "title": "测试内容",
-        "body": "这是一条测试内容。",
-        "sender": "测试用户",
-        "kind": "text",
-        "meta": {}
-      }
-    ],
-    "douyin": [
-      {
-        "id": "test-item-douyin",
-        "title": "测试内容",
-        "body": "这是一条测试内容。",
-        "sender": "测试用户",
-        "kind": "text",
-        "meta": {}
-      }
-    ],
-    "bilibili": [
-      {
-        "id": "test-item-bilibili",
-        "title": "测试内容",
-        "body": "这是一条测试内容。",
-        "sender": "测试用户",
-        "kind": "text",
-        "meta": {}
-      }
-    ],
-    "alipay": [
-      {
-        "id": "test-item-alipay",
-        "title": "测试内容",
-        "body": "这是一条测试内容。",
-        "sender": "测试用户",
-        "kind": "text",
-        "meta": {}
-      }
-    ],
-    "taobao": [
-      {
-        "id": "test-item-taobao",
-        "title": "测试内容",
-        "body": "这是一条测试内容。",
-        "sender": "测试用户",
-        "kind": "text",
-        "meta": {}
-      }
-    ],
-    "delivery": [
-      {
-        "id": "test-item-delivery",
-        "title": "测试内容",
-        "body": "这是一条测试内容。",
-        "sender": "测试用户",
-        "kind": "text",
-        "meta": {}
-      }
-    ],
-    "forum": [
-      {
-        "id": "test-item-forum",
-        "title": "测试内容",
-        "body": "这是一条测试内容。",
-        "sender": "测试用户",
-        "kind": "text",
-        "meta": {}
-      }
-    ],
-    "instagram": [
-      {
-        "id": "test-item-instagram",
-        "title": "测试内容",
-        "body": "这是一条测试内容。",
-        "sender": "测试用户",
-        "kind": "text",
-        "meta": {}
-      }
-    ],
-    "twitter": [
-      {
-        "id": "test-item-twitter",
-        "title": "测试内容",
-        "body": "这是一条测试内容。",
-        "sender": "测试用户",
-        "kind": "text",
-        "meta": {}
-      }
-    ],
-    "youtube": [
-      {
-        "id": "test-item-youtube",
-        "title": "测试内容",
-        "body": "这是一条测试内容。",
-        "sender": "测试用户",
-        "kind": "text",
-        "meta": {}
-      }
-    ],
-    "facebook": [
-      {
-        "id": "test-item-facebook",
-        "title": "测试内容",
-        "body": "这是一条测试内容。",
-        "sender": "测试用户",
-        "kind": "text",
-        "meta": {}
-      }
-    ],
-    "reddit": [
-      {
-        "id": "test-item-reddit",
-        "title": "测试内容",
-        "body": "这是一条测试内容。",
-        "sender": "测试用户",
-        "kind": "text",
-        "meta": {}
-      }
-    ],
-    "threads": [
-      {
-        "id": "test-item-threads",
-        "title": "测试内容",
-        "body": "这是一条测试内容。",
-        "sender": "测试用户",
-        "kind": "text",
-        "meta": {}
-      },
-      {
-        "id": "test-threads-message-1",
-        "title": "测试会话1",
-        "body": "这是一条测试消息。",
-        "sender": "测试联系人1",
-        "folder": "私信"
-      },
-      {
-        "id": "test-threads-activity-1",
-        "title": "测试动态1",
-        "body": "这是一条测试回复动态。",
-        "sender": "测试用户1",
+        "id": "weibo-public-001",
+        "title": "微博 · 公开动态",
+        "kind": "post",
+        "body": "（2026-04-23 10:21）多年同事，各自安好。不回应、不捆绑、不消费。谢谢大家关心。",
+        "time": "2026-04-23 10:21",
+        "sender": "汪东城",
         "meta": {
-          "activityType": "reply"
+          "type": "post"
         }
       },
       {
-        "id": "test-threads-message-2",
-        "title": "测试会话2",
-        "body": "这是一条测试消息。",
-        "sender": "测试联系人2",
-        "folder": "私信"
+        "id": "weibo-secret-follow",
+        "title": "特别关注列表",
+        "kind": "text",
+        "folder": "微博后台",
+        "body": "你特别关注了：炎亚纶_aaronyan、纶的理发店日常、东纶超话（仅自己可见）。",
+        "time": "2026-10-25 01:30",
+        "sender": "汪东城",
+        "hidden": true,
+        "password": "1120"
       },
       {
-        "id": "test-threads-activity-2",
-        "title": "测试动态2",
-        "body": "这是一条测试回复动态。",
-        "sender": "测试用户2",
-        "meta": {
-          "activityType": "reply"
-        }
-      },
-      {
-        "id": "test-threads-message-3",
-        "title": "测试会话3",
-        "body": "这是一条测试消息。",
-        "sender": "测试联系人3",
-        "folder": "私信"
-      },
-      {
-        "id": "test-threads-activity-3",
-        "title": "测试动态3",
-        "body": "这是一条测试回复动态。",
-        "sender": "测试用户3",
-        "meta": {
-          "activityType": "reply"
-        }
+        "id": "weibo-likes",
+        "title": "赞过的内容",
+        "kind": "text",
+        "folder": "微博后台",
+        "body": "你赞过：炎亚纶 2026-05-02 22:15 的微博（仅自己可见）；东纶超话 147 条帖子（仅自己可见）。",
+        "time": "2026-10-25 01:31",
+        "sender": "汪东城",
+        "hidden": true,
+        "password": "1120"
       }
     ],
-    "appstore": [
+    "calendar": [
       {
-        "id": "test-appstore",
-        "title": "测试内容",
-        "body": "这是一条测试内容。"
+        "id": "cal-aaron-birthday",
+        "title": "亚纶生日",
+        "kind": "event",
+        "body": "11月20日。每年这天我都发一条朋友圈，仅自己可见。",
+        "time": "2026-11-20 00:00",
+        "sender": "汪东城",
+        "hidden": true,
+        "password": "1120"
+      },
+      {
+        "id": "cal-debut-anniversary",
+        "title": "飞轮海出道纪念日",
+        "kind": "event",
+        "body": "2005年12月28日。二十一年了。",
+        "time": "2026-12-28 00:00",
+        "sender": "汪东城"
+      },
+      {
+        "id": "cal-aaron-wedding",
+        "title": "他结婚的日子",
+        "kind": "event",
+        "body": "我不去。但我会在台下某个角落。琪姐说这样不行。",
+        "time": "2026-12-15 00:00",
+        "sender": "汪东城",
+        "hidden": true,
+        "password": "1120"
+      }
+    ],
+    "photos": [
+      {
+        "id": "photo-hidden-001",
+        "title": "2006 团综后台",
+        "kind": "image",
+        "folder": "加密相簿",
+        "body": "他靠在我肩上睡着了。这张照片我存了二十年，换了六个手机都没丢。",
+        "time": "2026-04-01 03:40",
+        "sender": "汪东城",
+        "hidden": true,
+        "password": "1120"
+      },
+      {
+        "id": "photo-hidden-002",
+        "title": "2026.05.02 南京",
+        "kind": "image",
+        "folder": "加密相簿",
+        "body": "我在台上，他在台下。我让琪姐偷拍了一张。",
+        "time": "2026-05-02 22:30",
+        "sender": "汪东城",
+        "hidden": true,
+        "password": "1120"
+      }
+    ],
+    "safari": [
+      {
+        "id": "browser-history",
+        "title": "浏览器历史记录",
+        "kind": "text",
+        "body": "今天凌晨搜过：炎亚纶 结婚、东纶 超话、2026 南京音乐节 视频、'没有手机号 就不够了解我'。",
+        "time": "2026-10-25 01:45",
+        "sender": "汪东城",
+        "hidden": true,
+        "password": "1120"
+      }
+    ],
+    "clock": [
+      {
+        "id": "clock-alarm-birthday",
+        "title": "亚纶生日闹钟",
+        "kind": "event",
+        "body": "每年 11-20 00:00。我设了二十年，从来没关过。",
+        "time": "2026-11-20 00:00",
+        "sender": "汪东城",
+        "hidden": true,
+        "password": "1120"
+      }
+    ],
+    "reminders": [
+      {
+        "id": "reminder-wedding-gift",
+        "title": "他结婚要送什么",
+        "kind": "text",
+        "body": "琪姐说包个红包就行。我觉得不行。但我也不知道送什么。",
+        "time": "2026-10-20 10:00",
+        "sender": "汪东城",
+        "hidden": true,
+        "password": "1120"
       }
     ]
   },
   "variables": {},
-  "events": [],
-  "tests": []
+  "events": [
+    {
+      "id": "welcome",
+      "label": "开始",
+      "type": "start",
+      "actions": [
+        {
+          "type": "notification",
+          "key": "",
+          "value": "微信：亚纶发来一条消息"
+        }
+      ]
+    },
+    {
+      "id": "read-aaron-chat",
+      "label": "发现亚纶的聊天",
+      "event": "read",
+      "target": "msg-aaron-026",
+      "actions": [
+        {
+          "type": "unlock",
+          "key": "note-memories-2006",
+          "value": true
+        },
+        {
+          "type": "unlock",
+          "key": "weibo-secret-follow",
+          "value": true
+        },
+        {
+          "type": "notification",
+          "key": "",
+          "value": "备忘录：一条隐藏笔记已解锁"
+        }
+      ],
+      "next": [
+        "ending-choice"
+      ]
+    },
+    {
+      "id": "ending-choice",
+      "label": "你要假装什么都没发现吗？",
+      "type": "choice",
+      "next": [
+        "end-public",
+        "end-truth"
+      ]
+    },
+    {
+      "id": "end-public",
+      "label": "表面不合",
+      "type": "ending",
+      "actions": [
+        {
+          "type": "ending",
+          "key": "",
+          "value": "表面不合：你只看到了汪东城想让你看到的——一个直播黑脸、拉黑CP粉、说'多年同事各自安好'的中年艺人。"
+        }
+      ]
+    },
+    {
+      "id": "end-truth",
+      "label": "从来没断联",
+      "type": "ending",
+      "actions": [
+        {
+          "type": "ending",
+          "key": "",
+          "value": "从来没断联：那个备注'亚纶（小号）'的聊天记录里，二十年的拉扯都在。他没删你，你没删他，谁都没真的放手。"
+        }
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "name": "表面不合结局",
+      "steps": [
+        {
+          "event": "read",
+          "target": "msg-aaron-026"
+        },
+        {
+          "choose": "end-public"
+        }
+      ],
+      "ending": "表面不合：你只看到了汪东城想让你看到的——一个直播黑脸、拉黑CP粉、说'多年同事各自安好'的中年艺人。",
+      "expectUnlocked": [
+        "note-memories-2006",
+        "weibo-secret-follow"
+      ]
+    },
+    {
+      "name": "从来没断联结局",
+      "steps": [
+        {
+          "event": "read",
+          "target": "msg-aaron-026"
+        },
+        {
+          "choose": "end-truth"
+        }
+      ],
+      "ending": "从来没断联：那个备注'亚纶（小号）'的聊天记录里，二十年的拉扯都在。他没删你，你没删他，谁都没真的放手。",
+      "expectUnlocked": [
+        "note-memories-2006",
+        "weibo-secret-follow"
+      ]
+    },
+    {
+      "name": "深度解锁密码测试",
+      "steps": [
+        {
+          "event": "read",
+          "target": "msg-aaron-026"
+        },
+        {
+          "event": "read",
+          "target": "note-memories-2006",
+          "password": "1120"
+        },
+        {
+          "choose": "end-truth"
+        }
+      ],
+      "ending": "从来没断联：那个备注'亚纶（小号）'的聊天记录里，二十年的拉扯都在。他没删你，你没删他，谁都没真的放手。",
+      "expectUnlocked": [
+        "note-memories-2006"
+      ]
+    }
+  ]
 }
