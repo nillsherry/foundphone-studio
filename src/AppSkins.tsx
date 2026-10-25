@@ -1,6 +1,6 @@
 import { NativeComposer } from "./DeviceSystem";
 import { useSkinState } from "./skinState";
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import {
   ChevronLeft,
   Plus,
@@ -84,52 +84,79 @@ function ItemMedia({ item }: { item: Item }) {
     </div>
   );
 }
+function wxTime(t?: string) {
+  if (!t) return "";
+  const [, hm] = t.split(" ");
+  if (!hm) return t;
+  const [h, m] = hm.split(":");
+  const H = +h;
+  const period =
+    H >= 5 && H < 12 ? "上午" : H >= 12 && H < 18 ? "下午" : H >= 18 ? "晚上" : "凌晨";
+  return `${period} ${String(H).padStart(2, "0")}:${m}`;
+}
 function MessageList({
   items,
   creator,
   onItem,
   onRead,
   whatsapp = false,
+  showSelf = true,
 }: {
   items: Item[];
   creator: boolean;
   onItem: (i: Item) => void;
   onRead: (id: string) => void;
   whatsapp?: boolean;
+  showSelf?: boolean;
 }) {
   return (
     <div className={`skin-messages ${whatsapp ? "wa-wallpaper" : ""}`}>
       <div className="skin-date">{items[0]?.time.slice(0, 10)}</div>
-      {items.map((i) => (
-        <div
-          key={i.id}
-          className={`skin-message ${i.outgoing ? "outgoing" : ""}`}
-        >
-          {!whatsapp && !i.outgoing && (
-            <Avatar name={i.sender} src={i.avatar} />
-          )}
-          <button
-            className="skin-bubble"
-            onClick={() => (creator ? onItem(i) : onRead(i.id))}
-          >
-            {["image", "audio", "video"].includes(i.kind) ? (
-              <ItemMedia item={i} />
-            ) : i.kind === "transfer" ? (
-              <div className="skin-transfer">
-                ¥ {i.body}
-                <small>轉賬記錄 · 虛構</small>
-              </div>
-            ) : (
-              i.body
+      {items.map((i, idx) => {
+        const prev = items[idx - 1];
+        // 微信规范：气泡内不显示时间，跨时段时以灰色小字系统提示居中呈现
+        const showDivider = !whatsapp && prev && prev.time !== i.time;
+        return (
+          <Fragment key={i.id}>
+            {showDivider && (
+              <div className="wx-time-divider">{wxTime(i.time)}</div>
             )}
-            <small className={whatsapp ? undefined : "wx-message-time"}>
-              {i.time.slice(-5)}{" "}
-              {whatsapp && i.outgoing && <CheckCheck size={11} />}
-            </small>
-          </button>
-          {!whatsapp && i.outgoing && <Avatar name={i.sender} src={i.avatar} />}
-        </div>
-      ))}
+            <div
+              className={`skin-message ${i.outgoing ? "outgoing" : ""}`}
+            >
+              {!whatsapp && !i.outgoing && (
+                <Avatar name={i.sender} src={i.avatar} />
+              )}
+              <button
+                className="skin-bubble"
+                onClick={() => (creator ? onItem(i) : onRead(i.id))}
+              >
+                {["image", "audio", "video"].includes(i.kind) ? (
+                  <ItemMedia item={i} />
+                ) : i.kind === "transfer" ? (
+                  <div className="skin-transfer">
+                    ¥ {i.body}
+                    <small>轉賬記錄 · 虛構</small>
+                  </div>
+                ) : (
+                  i.body
+                )}
+                {whatsapp && (
+                  <small
+                    className={whatsapp ? undefined : "wx-message-time"}
+                  >
+                    {i.time.slice(-5)}{" "}
+                    {i.outgoing && <CheckCheck size={11} />}
+                  </small>
+                )}
+              </button>
+              {!whatsapp && showSelf && i.outgoing && (
+                <Avatar name={i.sender} src={i.avatar} />
+              )}
+            </div>
+          </Fragment>
+        );
+      })}
     </div>
   );
 }
@@ -171,9 +198,27 @@ export function WeChatSkin(p: SkinProps) {
         .map((i) => i.title),
     ),
   ];
+  const chatItems = p.items.filter(
+    (i) => i.folder !== "朋友圈" && i.kind !== "post",
+  );
   const contacts = [
-    ...new Set(p.items.map((i) => i.sender).filter((s) => s !== "我")),
+    ...new Set(
+      chatItems
+        .map((i) => i.sender)
+        .filter((s) => s !== "我" && s !== p.owner),
+    ),
   ];
+  const letterOf = (name: string) =>
+    chatItems.find((i) => i.sender === name)?.meta?.index || "";
+  const groupedContacts = [...contacts]
+    .sort(
+      (a, b) =>
+        letterOf(a).localeCompare(letterOf(b)) || a.localeCompare(b),
+    )
+    .reduce<Record<string, string[]>>((acc, c) => {
+      (acc[letterOf(c) || "#"] ||= []).push(c);
+      return acc;
+    }, {});
   const posts = p.items.filter(
     (i) => i.folder === "朋友圈" || i.kind === "post",
   );
@@ -283,6 +328,7 @@ export function WeChatSkin(p: SkinProps) {
             creator={p.creator}
             onItem={p.onItem}
             onRead={p.onRead}
+            showSelf={false}
           />
           <Compose creator={p.creator} onAdd={p.onAdd} />
         </>
@@ -339,7 +385,11 @@ export function WeChatSkin(p: SkinProps) {
                 )
                 .map((t) => {
                   const list = p.items.filter((i) => i.title === t),
-                    last = list.at(-1)!;
+                    last = list.at(-1)!,
+                    // 会话头像取对端（非机主）消息的头像，群组取任一成员头像
+                    chatAvatar =
+                      list.find((i) => !i.outgoing && i.avatar)?.avatar ||
+                      last.avatar;
                   return (
                     <button
                       className="wx-chat-row"
@@ -351,7 +401,7 @@ export function WeChatSkin(p: SkinProps) {
                       }}
                     >
                       <span className="wx-chat-avatar">
-                        <Avatar name={t} src={last.avatar} />
+                        <Avatar name={t} src={chatAvatar} />
                         {!readThreads.includes(t) &&
                           list.some((i) => !i.read) && (
                             <b className="wx-unread">
@@ -372,25 +422,32 @@ export function WeChatSkin(p: SkinProps) {
           ) : tab === "通訊錄" ? (
             <>
               <div className="wx-section-label">聯繫人</div>
-              {contacts.map((c) => (
-                <button
-                  key={c}
-                  className="wx-contact"
-                  onClick={() => {
-                    const item = p.items.find((i) => i.sender === c);
-                    if (item) {
-                      p.onThread(item.title);
-                      p.onRead(item.title);
-                    }
-                  }}
-                >
-                  <Avatar
-                    name={c}
-                    src={p.items.find((i) => i.sender === c)?.avatar}
-                  />
-                  {c}
-                </button>
-              ))}
+              {Object.keys(groupedContacts)
+                .sort()
+                .map((letter) => (
+                  <Fragment key={letter}>
+                    <div className="wx-contact-index">{letter}</div>
+                    {groupedContacts[letter].map((c) => (
+                      <button
+                        key={c}
+                        className="wx-contact"
+                        onClick={() => {
+                          const item = chatItems.find((i) => i.sender === c);
+                          if (item) {
+                            p.onThread(item.title);
+                            p.onRead(item.title);
+                          }
+                        }}
+                      >
+                        <Avatar
+                          name={c}
+                          src={chatItems.find((i) => i.sender === c)?.avatar}
+                        />
+                        {c}
+                      </button>
+                    ))}
+                  </Fragment>
+                ))}
             </>
           ) : tab === "發現" ? (
             <div className="wx-discover-groups">

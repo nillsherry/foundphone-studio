@@ -25,7 +25,7 @@ import {
   Users,
   Wallet,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { download } from "../io";
 import { safeMedia, type Item } from "../schema";
 import {
@@ -214,16 +214,21 @@ export function PhotosSkin(p: Props) {
           <>
             <SearchBox value={q} set={setQ} />
             <div className="photo-mosaic">
-              {list.map((i) => (
-                <button
-                  aria-label={`查看${i.title}`}
-                  key={i.id}
-                  onClick={() => p.onItem(i)}
-                >
-                  <Media item={i} />
-                  {i.favorite && <Heart size={12} fill="white" />}
-                </button>
-              ))}
+              {list.map((i) => {
+                const d = i.time?.split(" ")[0] || "";
+                const dm = d.length ? `${+d.slice(5, 7)}月${+d.slice(8, 10)}日` : "";
+                return (
+                  <button
+                    aria-label="查看照片"
+                    key={i.id}
+                    onClick={() => p.onItem(i)}
+                  >
+                    <Media item={i} />
+                    {i.favorite && <Heart size={12} fill="white" />}
+                    {dm && <small className="photo-date">{dm}</small>}
+                  </button>
+                );
+              })}
             </div>
             <p className="media-count">{list.length} 個項目</p>
           </>
@@ -249,6 +254,48 @@ export function CameraSkin(p: Props) {
     mode === "視頻" ? i.kind === "video" : i.kind !== "video",
   );
   const frame = frames[index % Math.max(frames.length, 1)];
+  const [live, setLive] = useState(true); // 优先调用真实摄像头
+  const [captured, setCaptured] = useState("");
+  const videoRef = useRef<HTMLVideoElement>(null);
+  useEffect(() => {
+    if (!live) return;
+    let stream: MediaStream | undefined;
+    let cancelled = false;
+    navigator.mediaDevices
+      ?.getUserMedia({ video: { facingMode: "environment" }, audio: false })
+      .then((s) => {
+        if (cancelled) {
+          s.getTracks().forEach((t) => t.stop());
+          return;
+        }
+        stream = s;
+        if (videoRef.current) {
+          videoRef.current.srcObject = s;
+          videoRef.current.play().catch(() => {});
+        }
+      })
+      .catch(() => {
+        if (!cancelled) setLive(false); // 无摄像头/未授权 → 回退虚拟取景
+      });
+    return () => {
+      cancelled = true;
+      if (stream) stream.getTracks().forEach((t) => t.stop());
+    };
+  }, [live]);
+  const snap = () => {
+    const v = videoRef.current;
+    if (!v || !v.videoWidth) return;
+    const c = document.createElement("canvas");
+    c.width = v.videoWidth || 1280;
+    c.height = v.videoHeight || 720;
+    c.getContext("2d")?.drawImage(v, 0, 0);
+    setCaptured(c.toDataURL("image/jpeg", 0.9));
+  };
+  const switchMode = (m: string) => {
+    setMode(m);
+    setIndex(0);
+    setCaptured("");
+  };
   return (
     <div className="catalog-skin native-camera">
       <Header p={p} />
@@ -257,7 +304,21 @@ export function CameraSkin(p: Props) {
         <span>{mode === "視頻" ? "HD · 30" : "4:3"}</span>
       </div>
       <div className="camera-view">
-        {frame ? <Media item={frame} /> : <p>未設置取景畫面</p>}
+        {captured ? (
+          <img className="camera-shot" src={captured} alt="拍攝結果" />
+        ) : live ? (
+          <video
+            className="camera-feed"
+            ref={videoRef}
+            autoPlay
+            playsInline
+            muted
+          />
+        ) : frame ? (
+          <Media item={frame} />
+        ) : (
+          <p>未設置取景畫面</p>
+        )}
         <div className="camera-grid" />
       </div>
       <div className="camera-mode">
@@ -265,10 +326,7 @@ export function CameraSkin(p: Props) {
           <button
             className={mode === m ? "selected" : ""}
             key={m}
-            onClick={() => {
-              setMode(m);
-              setIndex(0);
-            }}
+            onClick={() => switchMode(m)}
           >
             {m}
           </button>
@@ -277,28 +335,41 @@ export function CameraSkin(p: Props) {
       <div className="camera-controls">
         <button
           aria-label="查看上一畫面"
-          disabled={!frames.length}
+          disabled={!!captured || !frames.length}
           onClick={() => setIndex((i) => (i + 1) % frames.length)}
         >
           <Image size={24} />
         </button>
         <button
           className="camera-shutter"
-          aria-label={p.creator ? "編輯拍攝畫面" : "查看拍攝內容"}
-          disabled={!p.creator && !frame}
-          onClick={() => (p.creator ? p.onAdd() : frame && p.onItem(frame))}
+          aria-label={captured ? "重新拍攝" : "拍攝"}
+          onClick={() =>
+            captured
+              ? setCaptured("")
+              : live
+                ? snap()
+                : p.creator
+                  ? p.onAdd()
+                  : frame && p.onItem(frame)
+          }
         >
           <span />
         </button>
         <button
           aria-label="切換取景畫面"
-          disabled={frames.length < 2}
+          disabled={!!captured || frames.length < 2}
           onClick={() => setIndex((i) => i + 1)}
         >
           <Camera size={24} />
         </button>
       </div>
-      <small className="camera-caption">作者設置的虛構取景內容</small>
+      <small className="camera-caption">
+        {captured
+          ? "拍攝結果"
+          : live
+            ? "實時取景 · 調用真實攝像頭"
+            : "作者設置的虛構取景內容"}
+      </small>
     </div>
   );
 }

@@ -430,6 +430,19 @@
 .ios18 .wechat-ui .wx-message-time {
   display: none;
 }
+.ios18 .wechat-ui .wx-time-divider {
+  text-align: center;
+  font-size: 11px;
+  color: #9b9b9b;
+  margin: 8px 0;
+}
+.ios18 .wechat-ui .wx-contact-index {
+  padding: 7px 16px 3px;
+  font-size: 12px;
+  color: #8a8a8a;
+  background: #f7f7f7;
+  border-bottom: 0.5px solid #e5e5e5;
+}
 .ios18 .wechat-ui .skin-date {
   font-size: 12px;
   margin-bottom: 22px;
@@ -953,3 +966,76 @@
   font-size: 12px;
 }
 
+
+/* ===== iOS 27 關鍵界面增強 ===== */
+/* 鎖屏：時鐘 widget 卡片 + 大號時間 */
+.ios18 .lock-screen > .lock-clock-block h1 {
+  font-size: 118px;
+  letter-spacing: -7px;
+}
+.ios18 .lock-widget-row {
+  position: absolute;
+  left: 20px;
+  right: 20px;
+  top: 250px;
+  display: flex;
+  gap: 10px;
+}
+.ios18 .lock-widget.glass {
+  flex: 1;
+  min-width: 0;
+  min-height: 82px;
+  border-radius: 22px;
+  padding: 11px 13px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1px;
+  background: linear-gradient(165deg, #ffffff5e, #ffffff26);
+  backdrop-filter: blur(34px) saturate(1.9);
+  border: 1px solid #ffffff73;
+  box-shadow:
+    inset 0 1px 2px #fffe,
+    0 10px 28px #0003;
+  color: #fff;
+  text-shadow: 0 1px 4px #0006;
+}
+.ios18 .lock-widget small {
+  font-size: 11px;
+  opacity: 0.95;
+  letter-spacing: 0.2px;
+}
+.ios18 .lock-widget b {
+  font-size: 30px;
+  font-weight: 600;
+  line-height: 1.05;
+}
+.ios18 .lock-widget span {
+  font-size: 11px;
+  opacity: 0.9;
+}
+/* 桌面：圖標更圓潤 */
+.ios18 .home-app-grid > button .app-icon,
+.ios18 .dock .app-icon {
+  border-radius: 18px;
+}
+.ios18 .dock {
+  background: linear-gradient(180deg, #ffffff3c, #ffffff14);
+  border: 1px solid #ffffff52;
+}
+.ios18 .home-page-dots button[aria-current] {
+  width: 14px;
+  border-radius: 8px;
+}
+/* 控制中心：磁貼卡片 */
+.ios18 .cc-page-rail button {
+  border-radius: 16px;
+}
+/* 設置：分組圓角卡片 */
+.ios18 .settings-group,
+.ios18 .catalog-skin[class*="native-"] .settings-cell {
+  border-radius: 18px;
+  background: #ffffff2e;
+  backdrop-filter: blur(26px) saturate(1.6);
+  border: 1px solid #ffffff3a;
+}
