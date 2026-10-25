@@ -549,6 +549,27 @@
   color: white;
   text-shadow: 0 1px 3px #0005;
 }
+
+/* 中年二次元壁纸：初号机紫绿 + 超赛金/火影橙 暗色渐变 */
+.ios18 .wallpaper-otaku {
+  background:
+    radial-gradient(ellipse 80% 50% at 20% 15%, rgba(123, 45, 142, 0.55) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 85% 80%, rgba(255, 140, 0, 0.35) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 35% at 70% 20%, rgba(0, 200, 80, 0.25) 0%, transparent 50%),
+    linear-gradient(160deg, #1a0a2e 0%, #2d1b4e 30%, #0f1923 65%, #1a0a2e 100%);
+}
+.ios18 .wallpaper-otaku .wallpaper-orb {
+  display: none;
+}
+.ios18 .wallpaper-otaku:not(.in-app) .status-bar,
+.ios18 .wallpaper-otaku .app-name {
+  color: #f0e6ff;
+  text-shadow: 0 1px 4px #0008;
+}
+.ios18 .wallpaper-otaku .app-icon-label {
+  color: #f0e6ff;
+  text-shadow: 0 1px 3px #0008;
+}
 /* Reference #11, normalized from 1206 × 2622 to 393 × 852. */
 .ios18 .system-panel.device-control {
   padding: 166px 37px 40px;
