@@ -19,7 +19,7 @@
     "contacts",
     "kakao",
     "instagram",
-    "twitter"
+    "weibo"
   ],
   "contacts": [
     {
@@ -86,7 +86,7 @@
         "folder": "私信"
       }
     ],
-    "twitter": [
+    "weibo": [
       {
         "id": "x-test-post",
         "title": "测试帖子",
