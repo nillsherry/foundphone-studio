@@ -37,6 +37,7 @@ import {
   useEffect,
   useState,
   useRef,
+  useMemo,
   Suspense,
   type CSSProperties,
 } from "react";
@@ -189,6 +190,14 @@ function PhoneRuntime({
     };
   }, [creator, ready]);
   const s = external ?? own;
+  const badges = useMemo(() => {
+    const counts: Record<string, number> = {};
+    for (const n of s.notifications) {
+      const id = notificationContent(n, work.apps).appId;
+      counts[id] = (counts[id] ?? 0) + 1;
+    }
+    return counts;
+  }, [s.notifications, work.apps]);
   const runtimeRef = useRef(s);
   runtimeRef.current = s;
   const update = (next: Runtime) => {
@@ -505,6 +514,7 @@ function PhoneRuntime({
                 onFolder={setFolder}
                 search={() => setPanel("search")}
                 time={displayTime}
+                badges={badges}
                 icon={(a, small) => (
                   <AppIcon
                     key={a.id}
@@ -567,11 +577,11 @@ function PhoneRuntime({
                     <SystemNotifications
                       notices={s.notifications}
                       apps={work.apps}
-                      onOpen={() => {
+                      onOpen={(id) => {
                         setPanel("");
                         if (locked) beginUnlock();
-                        else if (installedApps.some((a) => a.id === "messages"))
-                          open("messages");
+                        else if (installedApps.some((a) => a.id === id))
+                          open(id);
                       }}
                       onDismiss={dismissNotice}
                     />
@@ -694,8 +704,9 @@ function PhoneRuntime({
             <button
               className="device-banner"
               onClick={() => {
+                const id = notificationContent(banner, work.apps).appId;
                 setBanner("");
-                setPanel("notification");
+                open(id);
               }}
             >
               <AppIcon
