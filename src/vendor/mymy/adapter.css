@@ -739,3 +739,28 @@
   width: 26px;
   height: 26px;
 }
+/* 私信输入条 */
+.mymy-ui .ig-dm-compose {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding-top: 10px;
+  border-top: 0.5px solid #ebebeb;
+}
+.mymy-ui .ig-dm-compose input {
+  flex: 1;
+  min-width: 0;
+  border: 1px solid #dbdbdb;
+  border-radius: 18px;
+  background: #fafafa;
+  padding: 8px 14px;
+  font-size: 13px;
+  outline: none;
+}
+.mymy-ui .ig-dm-compose button {
+  border: 0;
+  background: none;
+  color: #3897f0;
+  font-weight: 600;
+  font-size: 13px;
+}

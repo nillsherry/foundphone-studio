@@ -32,6 +32,7 @@ import type { SkinProps } from "../../AppSkins";
 import { Avatar, Media } from "../../skins/shared";
 import { useSkinState } from "../../skinState";
 import { makeItem, type Item } from "../../schema";
+import { aiReply } from "../../aiReplies";
 import { FIG1_YAN, FIG2_WANG, FIG4_TIGER } from "./igAvatars";
 import "./ui.css";
 import "./adapter.css";
@@ -329,6 +330,8 @@ export function MymyInstagram(p: SkinProps) {
     [draft, setDraft] = useState(""),
     [pop, setPop] = useState(""),
     [dmThread, setDmThread] = useState(""),
+    [igDraft, setIgDraft] = useState(""),
+    [igFree, setIgFree] = useState<string[]>([]),
     [alt, setAlt] = useState(false);
   const posts = p.items.filter(
       (i) => i.folder !== "私信" && i.meta.story !== "true" && i.folder !== "threads",
@@ -354,6 +357,23 @@ export function MymyInstagram(p: SkinProps) {
     setSeen([...new Set([...seen, m.id])]);
     read(p, m);
     setStory(i + 1);
+  };
+  const sendIgFree = () => {
+    const txt = igDraft.trim();
+    if (!txt) return;
+    setIgFree((prev) => [...prev, `ig-dm-aaron|愛霖凍布丁|1|${txt}`]);
+    setIgDraft("");
+    const reply = aiReply("炎亞綸Aaron", txt);
+    if (reply) {
+      setTimeout(
+        () =>
+          setIgFree((prev) => [
+            ...prev,
+            `ig-dm-aaron|炎亞綸Aaron|0|${reply}`,
+          ]),
+        500 + Math.floor(Math.random() * 500),
+      );
+    }
   };
   const openPost = (i: Item) => {
     if (p.creator || i.password) p.onItem(i);
@@ -456,11 +476,13 @@ export function MymyInstagram(p: SkinProps) {
               ? "帖子"
               : dmThread
                 ? "炎亞綸Aaron"
-                : alt
-                  ? "愛霖凍布丁"
-                  : tab === "主頁"
-                    ? "Instagram"
-                    : tab}
+                : tab === "私信"
+                  ? "私信"
+                  : alt
+                    ? "愛霖凍布丁"
+                    : tab === "主頁"
+                      ? "Instagram"
+                      : tab}
           </span>
           <button
             aria-label={alt ? "切換回主帳號" : "切換帳號"}
@@ -486,16 +508,49 @@ export function MymyInstagram(p: SkinProps) {
               {threadMsgs.map((m) => (
                 <div
                   key={m.id}
-                  className={`ig-dm-msg ${m.sender === "汪東城" ? "out" : ""}`}
+                  className={`ig-dm-msg ${m.outgoing ? "out" : ""}`}
                 >
                   <Avatar
                     name={m.sender}
-                    src={m.sender === "汪東城" ? igAvatar : yanAvatar(m.avatar)}
+                    src={m.outgoing ? igAvatar : yanAvatar(m.avatar)}
                   />
                   <span>{m.body}</span>
                 </div>
               ))}
+              {igFree
+                .filter((r) => r.startsWith("ig-dm-aaron|"))
+                .map((row, n) => {
+                  const [, sender, out, ...rest] = row.split("|");
+                  return (
+                    <div
+                      key={"free-" + n}
+                      className={`ig-dm-msg ${out === "1" ? "out" : ""}`}
+                    >
+                      <Avatar
+                        name={sender}
+                        src={out === "1" ? igAvatar : yanAvatar("")}
+                      />
+                      <span>{rest.join("|")}</span>
+                    </div>
+                  );
+                })}
               <p className="ig-dm-note">你正以「布丁」身份回覆</p>
+              <form
+                className="ig-dm-compose"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  sendIgFree();
+                }}
+              >
+                <input
+                  aria-label="輸入訊息"
+                  value={igDraft}
+                  onChange={(e) => setIgDraft(e.target.value)}
+                  placeholder="輸入訊息…"
+                  maxLength={500}
+                />
+                <button aria-label="發送">發送</button>
+              </form>
             </div>
           )}
           {!dmThread && selected && post(selected)}
@@ -505,7 +560,7 @@ export function MymyInstagram(p: SkinProps) {
                 <Avatar name="愛霖凍布丁" src={FIG4_TIGER} />
                 <div className="ps">
                   <div>
-                    <b>—</b>
+                    <b>{posts.length}</b>
                     <small>帖子</small>
                   </div>
                   <div>
@@ -555,7 +610,7 @@ export function MymyInstagram(p: SkinProps) {
                 <Avatar name="汪東城" src={igAvatar} />
                 <div className="ps">
                   <div>
-                    <b>2269</b>
+                    <b>{posts.length}</b>
                     <small>帖子</small>
                   </div>
                   <div>
