@@ -647,6 +647,22 @@
   white-space: pre-wrap;
 }
 .mymy-ui .ig-bio.muted { color: #8a8a8a; }
+.mymy-ui .igp-actions {
+  display: flex;
+  gap: 6px;
+  margin: 10px 12px 0;
+}
+.mymy-ui .igp-actions button {
+  flex: 1;
+  padding: 6px 8px;
+  border: 1px solid #dbdbdb;
+  border-radius: 8px;
+  background: #fafafa;
+  font-size: 12px;
+  font-weight: 600;
+  color: #262626;
+}
+.mymy-ui .igp-actions button:hover { background: #efefef; }
 .mymy-ui .ig-highlights {
   display: flex;
   gap: 9px;

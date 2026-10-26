@@ -131,7 +131,7 @@ export function PhoneSkin(p: Props) {
           <small>虛擬通話</small>
           <Avatar name={call} />
           <h2>{call}</h2>
-          <p>這是作品內的通話模擬</p>
+          <p>您撥打的電話暫時無法接聽，請稍後再撥。</p>
           <button aria-label="掛斷" onClick={() => setCall("")}>
             <Phone />
           </button>
@@ -142,43 +142,79 @@ export function PhoneSkin(p: Props) {
 }
 export function ContactsSkin(p: Props) {
   const { q, setQ, items } = useContent(p, "所有聯繫人");
+  const [sel, setSel] = useState(false);
+  const [calling, setCalling] = useState(false);
+  const abu = items.find((i) => i.title === "阿布" && i.id === "abu-card");
+  const sms = items
+    .filter((i) => i.title === "阿布" && i.id !== "abu-card")
+    .sort((a, b) => a.time.localeCompare(b.time));
+  const phone = abu ? meta(abu, "number") : "";
   return (
     <div className="catalog-skin native-contacts">
       <Header p={p} />
       <div className="catalog-scroll">
-        <h1>通訊錄</h1>
-        <SearchBox value={q} set={setQ} />
-        <button
-          className="contact-self"
-          onClick={() => {
-            if (items[0]) p.onItem(items[0]);
-            else if (p.creator) p.onAdd();
-          }}
-        >
-          <Avatar name={p.owner ?? "我"} />
-          <span>
-            <strong>{p.owner ?? "我的名片"}</strong>
-            <small>我的名片</small>
-          </span>
-        </button>
-        {groupItems(items, "所有聯繫人").map((g) => (
-          <section key={g}>
-            <h4 className="native-section">{g}</h4>
-            {items
-              .filter((i) => (i.folder || "所有聯繫人") === g)
-              .sort((a, b) => a.title.localeCompare(b.title, "zh-CN"))
-              .map((i) => (
+        {sel ? (
+          <>
+            <h1>阿布</h1>
+            <p className="native-section">
+              號碼 {phone} · 已註銷
+            </p>
+            {sms.map((i) => (
+              <div className="abu-sms" key={i.id}>
+                <strong>{i.sender}</strong>
+                <p>{i.body}</p>
+                <small>{i.time}</small>
+              </div>
+            ))}
+            <button
+              className="dial-call"
+              onClick={() => setCalling(true)}
+              style={{ marginTop: 16 }}
+            >
+              <Phone size={20} /> 撥打
+            </button>
+          </>
+        ) : (
+          <>
+            <h1>通訊錄</h1>
+            <SearchBox value={q} set={setQ} />
+            <button
+              className="contact-self"
+              onClick={() => {
+                if (p.creator) p.onAdd();
+              }}
+            >
+              <Avatar name={p.owner ?? "我"} />
+              <span>
+                <strong>{p.owner ?? "我的名片"}</strong>
+                <small>我的名片</small>
+              </span>
+            </button>
+            <section>
+              <h4 className="native-section">所有聯繫人</h4>
+              {abu ? (
                 <Row
-                  key={i.id}
-                  item={i}
-                  onItem={p.onItem}
-                  leading={<Avatar name={i.title} />}
+                  item={abu}
+                  onItem={() => setSel(true)}
+                  leading={<Avatar name="阿布" />}
                 />
-              ))}
-          </section>
-        ))}
-        <Empty items={items} />
+              ) : null}
+            </section>
+            <Empty items={items.filter((i) => i.id === "abu-card")} />
+          </>
+        )}
       </div>
+      {calling && (
+        <div className="virtual-call">
+          <small>正在撥打 阿布 {phone}</small>
+          <Avatar name="阿布" />
+          <h2>阿布</h2>
+          <p>您撥打的電話暫時無法接聽，請稍後再撥。</p>
+          <button aria-label="掛斷" onClick={() => setCalling(false)}>
+            <Phone />
+          </button>
+        </div>
+      )}
     </div>
   );
 }

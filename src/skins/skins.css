@@ -333,6 +333,22 @@
   padding-top: 10px;
   padding-bottom: 10px;
 }
+.abu-sms {
+  padding: 10px 16px;
+  border-bottom: 1px solid #f0f0f0;
+}
+.abu-sms strong {
+  font-size: 13px;
+}
+.abu-sms p {
+  font-size: 14px;
+  margin: 4px 0;
+  color: #111;
+}
+.abu-sms small {
+  font-size: 10px;
+  color: #999;
+}
 .photo-mosaic {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));

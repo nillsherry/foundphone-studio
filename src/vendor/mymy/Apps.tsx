@@ -27,11 +27,13 @@ import {
   BadgeCheck,
   RefreshCw,
   Lock,
+  ChevronDown,
 } from "lucide-react";
 import type { SkinProps } from "../../AppSkins";
 import { Avatar, Media } from "../../skins/shared";
 import { useSkinState } from "../../skinState";
 import { makeItem, type Item } from "../../schema";
+import { FIG1_YAN, FIG2_WANG, FIG4_TIGER } from "./igAvatars";
 import "./ui.css";
 import "./adapter.css";
 function grouped(items: Item[]) {
@@ -336,7 +338,8 @@ export function MymyInstagram(p: SkinProps) {
     dms = p.items.filter((i) => i.folder === "私信"),
     threadMsgs = p.items.filter((i) => i.folder === "threads"),
     active = stories[story - 1];
-  const igAvatar = posts[0]?.avatar || undefined;
+  const igAvatar = alt ? FIG4_TIGER : FIG2_WANG;
+  const yanAvatar = (src?: string) => src || FIG1_YAN;
   const toggle = (id: string, values: string[], set: (v: string[]) => void) =>
     set(values.includes(id) ? values.filter((v) => v !== id) : [...values, id]);
   useEffect(() => {
@@ -455,7 +458,7 @@ export function MymyInstagram(p: SkinProps) {
               : dmThread
                 ? "炎亞綸Aaron"
                 : alt
-                  ? "小號"
+                  ? "愛霖凍布丁"
                   : tab === "主頁"
                     ? "Instagram"
                     : tab}
@@ -468,7 +471,7 @@ export function MymyInstagram(p: SkinProps) {
               setDmThread("");
             }}
           >
-            <RefreshCw />
+            <ChevronDown />
           </button>
           <button aria-label="打開私信" onClick={() => setTab("私信")}>
             <Send />
@@ -478,7 +481,7 @@ export function MymyInstagram(p: SkinProps) {
           {dmThread && (
             <div className="ig-dm">
               <div className="ig-dm-head">
-                <Avatar name="炎亞綸Aaron" src={threadMsgs[0]?.avatar} />
+                <Avatar name="炎亞綸Aaron" src={yanAvatar(threadMsgs[0]?.avatar)} />
                 <b>炎亞綸Aaron</b>
               </div>
               {threadMsgs.map((m) => (
@@ -486,7 +489,10 @@ export function MymyInstagram(p: SkinProps) {
                   key={m.id}
                   className={`ig-dm-msg ${m.sender === "汪東城" ? "out" : ""}`}
                 >
-                  <Avatar name={m.sender} src={m.avatar} />
+                  <Avatar
+                    name={m.sender}
+                    src={m.sender === "汪東城" ? igAvatar : yanAvatar(m.avatar)}
+                  />
                   <span>{m.body}</span>
                 </div>
               ))}
@@ -497,7 +503,7 @@ export function MymyInstagram(p: SkinProps) {
           {!dmThread && !selected && alt && (
             <div className="igp-profile alt">
               <div className="pf">
-                <Avatar name="小號" />
+                <Avatar name="愛霖凍布丁" src={FIG4_TIGER} />
                 <div className="ps">
                   <div>
                     <b>—</b>
@@ -513,7 +519,7 @@ export function MymyInstagram(p: SkinProps) {
                   </div>
                 </div>
               </div>
-              <p className="pn">小號</p>
+              <p className="pn">愛霖凍布丁</p>
               <p className="ig-bio muted">暫無個人簡介</p>
               <div className="ptab">
                 <div className="on">
@@ -580,6 +586,10 @@ export function MymyInstagram(p: SkinProps) {
                 weibo.cn/saiyanjiro
                 <br />@ jirorocker
               </p>
+              <div className="igp-actions">
+                <button>編輯主頁</button>
+                <button>成效分析</button>
+              </div>
               <div className="ig-highlights">
                 {stories.map((s) => (
                   <button key={s.id} onClick={() => openStory(stories.indexOf(s))}>
@@ -606,32 +616,36 @@ export function MymyInstagram(p: SkinProps) {
           )}
           {!dmThread && !selected && tab === "私信" && (
             <>
-              {dms.map((i) =>
-                i.meta.locked ? (
-                  <div className="kzkr locked" key={i.id}>
-                    <Avatar name={i.sender} src={i.avatar} />
-                    <span className="kzkn">
-                      <b>
-                        {i.title} <Lock size={10} className="ig-lock" />
-                      </b>
-                      <small className="ig-gray">{i.body}</small>
-                    </span>
-                  </div>
-                ) : (
-                  <button
-                    className="kzkr"
-                    key={i.id}
-                    onClick={() => setDmThread(i.title)}
-                  >
-                    <Avatar name={i.sender} src={i.avatar} />
-                    <span className="kzkn">
-                      <b>{i.title}</b>
-                      <small>{i.body}</small>
-                    </span>
-                  </button>
-                ),
+              {alt ? (
+                dms.map((i) =>
+                  i.meta.locked ? (
+                    <div className="kzkr locked" key={i.id}>
+                      <Avatar name={i.sender} src={yanAvatar(i.avatar)} />
+                      <span className="kzkn">
+                        <b>
+                          {i.title} <Lock size={10} className="ig-lock" />
+                        </b>
+                        <small className="ig-gray">{i.body}</small>
+                      </span>
+                    </div>
+                  ) : (
+                    <button
+                      className="kzkr"
+                      key={i.id}
+                      onClick={() => setDmThread(i.title)}
+                    >
+                      <Avatar name={i.sender} src={yanAvatar(i.avatar)} />
+                      <span className="kzkn">
+                        <b>{i.title}</b>
+                        <small>{i.body}</small>
+                      </span>
+                    </button>
+                  ),
+                )
+              ) : (
+                <p className="ig-dm-note">切換到小號後查看私信</p>
               )}
-              {!dms.length && <Blank />}
+              {!dms.length && alt && <Blank />}
             </>
           )}
           {!dmThread && !selected && tab === "搜索" && (

@@ -15,6 +15,16 @@ import { motion } from "motion/react";
 import { AppDock } from "../vendor/ios-web/Launcher";
 import { category } from "../apps";
 import type { Work } from "../schema";
+
+// 有新消息时显示红点的应用（内置性格回复/预置对话视为有未读新消息）
+const NEW_MSG_APPS = new Set([
+  "wechat",
+  "line",
+  "instagram",
+  "messages",
+  "contacts",
+  "phone",
+]);
 import {
   homeEntries,
   packHome,
@@ -473,6 +483,11 @@ export function HomeLauncher(p: Props) {
           <span className="app-name">{entry.folder}</span>
         </span>
       )}
+      {entry.app &&
+        entry.app.installed &&
+        NEW_MSG_APPS.has(entry.app.id) && (
+          <span className="app-badge" aria-label="有新消息" />
+        )}
       {editing && (
         <span className="launcher-remove">
           <Minus size={12} />
