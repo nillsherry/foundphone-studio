@@ -54,10 +54,26 @@ export function ensureAppStore(work: Work): Work {
 }
 export function defaultLayout(input: Work): DeviceLayout {
   const w = ensureAppStore(input);
+  const positions: DeviceLayout["positions"] = {};
+  let previewLayoutRevision = 0;
+  for (const a of w.apps) {
+    if (
+      a.installed &&
+      a.visible &&
+      !a.dock &&
+      a.page != null &&
+      a.x != null &&
+      a.y != null
+    ) {
+      positions[a.id] = { page: a.page, x: a.x, y: a.y };
+      previewLayoutRevision = 1;
+    }
+  }
   return {
     version: 1,
     workId: w.id,
-    previewLayoutRevision: w.id === "ui-test-phone-v2" ? 1 : 0,
+    previewLayoutRevision:
+      w.id === "ui-test-phone-v2" ? 1 : previewLayoutRevision,
     apps: structuredClone(w.apps)
       .sort((a, b) => (a.id === "appstore" ? -1 : b.id === "appstore" ? 1 : 0))
       .map((a) =>
@@ -68,7 +84,7 @@ export function defaultLayout(input: Work): DeviceLayout {
     widgets: [],
     order: [],
     cleared: [],
-    positions: {},
+    positions,
   };
 }
 export function validateLayout(raw: unknown, input: Work) {
@@ -135,15 +151,18 @@ export function useDeviceLayout(authored: Work, creator = false) {
   const base = useMemo(() => ensureAppStore(authored), [authored]);
   const key = "foundphone-layout-v1:" + base.id;
   const [stored, setStored] = useState(() => {
-      try {
-        const text = localStorage.getItem(key);
-        return text
-          ? validateLayout(JSON.parse(text), base)
-          : defaultLayout(base);
-      } catch {
-        return defaultLayout(base);
-      }
-    }),
+    try {
+      const text = localStorage.getItem(key);
+      if (!text) return defaultLayout(base);
+      const parsed = validateLayout(JSON.parse(text), base);
+      const fresh = defaultLayout(base);
+      if (parsed.previewLayoutRevision < fresh.previewLayoutRevision)
+        return fresh;
+      return parsed;
+    } catch {
+      return defaultLayout(base);
+    }
+  }),
     [error, setError] = useState("");
   const layout = stored.workId === base.id ? stored : defaultLayout(base);
   useEffect(() => {

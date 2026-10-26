@@ -37,7 +37,6 @@ type Props = {
   search: () => void;
   icon: (app: AppConfig, small?: boolean) => ReactNode;
   time: string;
-  badges?: Record<string, number>;
   clearApp: (id: string) => void;
 };
 const widgetLabels = {
@@ -472,13 +471,6 @@ export function HomeLauncher(p: Props) {
               .map((a) => p.icon(a, true))}
           </span>
           <span className="app-name">{entry.folder}</span>
-        </span>
-      )}
-      {entry.app && entry.app.installed && (
-        <span className="app-badge" aria-label="有未讀通知">
-          {(p.badges?.[entry.app.id] ?? 0) > 9
-            ? "9+"
-            : p.badges?.[entry.app.id] || ""}
         </span>
       )}
       {editing && (
