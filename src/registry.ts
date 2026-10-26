@@ -30,7 +30,6 @@ import {
   Pin,
   AtSign,
   Send,
-  Tv,
   type LucideIcon,
 } from "lucide-react";
 export type EngineKind =
@@ -94,7 +93,6 @@ const definitions: [
     MessageCircle,
     ["微信", "通訊錄", "朋友圈", "我"],
   ],
-  ["qq", "QQ", "messaging", "#529fd3", Users, ["消息", "聯繫人", "空間"]],
   ["weibo", "微博", "social", "#db7652", Radio, ["關注", "發現", "我"]],
   [
     "redbook",
@@ -105,8 +103,6 @@ const definitions: [
     ["發現", "關注", "收藏"],
   ],
   ["douyin", "抖音", "media", "#292c33", Video, ["推薦", "關注", "記錄"]],
-  ["bilibili", "嗶哩嗶哩", "media", "#d785a1", Tv, ["首頁", "動態", "歷史"]],
-  ["alipay", "支付寶", "records", "#368dcc", Wallet, ["賬單", "卡包"]],
   [
     "taobao",
     "淘寶",
@@ -135,7 +131,6 @@ const definitions: [
     ["首頁", "Story", "Reels", "私信", "個人主頁"],
   ],
   ["tiktok", "TikTok", "media", "#303538", Video, ["推薦", "關注"]],
-  ["twitter", "X", "social", "#343839", AtSign, ["時間線", "回覆"]],
   ["telegram", "Telegram", "messaging", "#62a6c8", Send, ["聊天", "頻道"]],
   [
     "discord",
@@ -155,7 +150,6 @@ const definitions: [
   ],
   ["line", "LINE", "messaging", "#5db873", MessageCircle, ["聊天", "好友"]],
   ["snapchat", "Snapchat", "social", "#ccbb49", Camera, ["動態", "回憶"]],
-  ["facebook", "Facebook", "social", "#587bb5", Users, ["動態", "個人主頁"]],
   [
     "messenger",
     "Messenger",

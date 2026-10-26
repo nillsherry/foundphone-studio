@@ -37,7 +37,6 @@ import {
   useEffect,
   useState,
   useRef,
-  useMemo,
   Suspense,
   type CSSProperties,
 } from "react";
@@ -190,14 +189,6 @@ function PhoneRuntime({
     };
   }, [creator, ready]);
   const s = external ?? own;
-  const badges = useMemo(() => {
-    const counts: Record<string, number> = {};
-    for (const n of s.notifications) {
-      const id = notificationContent(n, work.apps).appId;
-      counts[id] = (counts[id] ?? 0) + 1;
-    }
-    return counts;
-  }, [s.notifications, work.apps]);
   const runtimeRef = useRef(s);
   runtimeRef.current = s;
   const update = (next: Runtime) => {
@@ -514,7 +505,6 @@ function PhoneRuntime({
                 onFolder={setFolder}
                 search={() => setPanel("search")}
                 time={displayTime}
-                badges={badges}
                 icon={(a, small) => (
                   <AppIcon
                     key={a.id}
