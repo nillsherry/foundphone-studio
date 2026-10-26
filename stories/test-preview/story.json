@@ -60,11 +60,8 @@
     "find",
     "calculator",
     "settings",
-    "qq",
     "weibo",
     "redbook",
-    "bilibili",
-    "alipay",
     "taobao",
     "netease",
     "delivery",
@@ -72,13 +69,11 @@
     "whatsapp",
     "instagram",
     "tiktok",
-    "twitter",
     "telegram",
     "discord",
     "youtube",
     "line",
     "snapchat",
-    "facebook",
     "messenger",
     "reddit",
     "spotify",
@@ -123,22 +118,6 @@
       "messages": [
         {
           "id": "test-message-wechat",
-          "body": "这是一条测试消息。",
-          "senderId": "test-contact"
-        }
-      ]
-    },
-    {
-      "id": "test-chat-qq",
-      "app": "qq",
-      "title": "测试会话",
-      "participants": [
-        "owner",
-        "test-contact"
-      ],
-      "messages": [
-        {
-          "id": "test-message-qq",
           "body": "这是一条测试消息。",
           "senderId": "test-contact"
         }
@@ -467,26 +446,6 @@
         "meta": {}
       }
     ],
-    "bilibili": [
-      {
-        "id": "test-item-bilibili",
-        "title": "测试内容",
-        "body": "这是一条测试内容。",
-        "sender": "测试用户",
-        "kind": "text",
-        "meta": {}
-      }
-    ],
-    "alipay": [
-      {
-        "id": "test-item-alipay",
-        "title": "测试内容",
-        "body": "这是一条测试内容。",
-        "sender": "测试用户",
-        "kind": "text",
-        "meta": {}
-      }
-    ],
     "taobao": [
       {
         "id": "test-item-taobao",
@@ -547,16 +506,6 @@
         "meta": {}
       }
     ],
-    "twitter": [
-      {
-        "id": "test-item-twitter",
-        "title": "测试内容",
-        "body": "这是一条测试内容。",
-        "sender": "测试用户",
-        "kind": "text",
-        "meta": {}
-      }
-    ],
     "youtube": [
       {
         "id": "test-item-youtube",
@@ -570,16 +519,6 @@
     "snapchat": [
       {
         "id": "test-item-snapchat",
-        "title": "测试内容",
-        "body": "这是一条测试内容。",
-        "sender": "测试用户",
-        "kind": "text",
-        "meta": {}
-      }
-    ],
-    "facebook": [
-      {
-        "id": "test-item-facebook",
         "title": "测试内容",
         "body": "这是一条测试内容。",
         "sender": "测试用户",
