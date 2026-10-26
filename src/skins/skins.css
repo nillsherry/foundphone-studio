@@ -1803,6 +1803,24 @@
 .line-ui {
   --app-accent: #08b851;
 }
+.line-ui .free-input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: none;
+  box-shadow: none;
+  padding: 2px;
+  height: 36px;
+  font-size: 14px;
+}
+.line-ui .free-send {
+  flex: none;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #06c755;
+  color: #fff;
+}
 .line-ui .catalog-nav {
   background: #fff;
   border: 0;

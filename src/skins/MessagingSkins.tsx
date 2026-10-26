@@ -1,5 +1,6 @@
 import { QQThread } from "./QQThread";
 import { NativeComposer } from "../DeviceSystem";
+import { aiReply } from "../aiReplies";
 import {
   CheckCheck,
   Compass,
@@ -379,6 +380,56 @@ export function DiscordSkin(p: Props) {
 }
 export function LineSkin(p: Props) {
   const { tab, setTab, q, setQ, items } = useContent(p, "聊天");
+  const [freeDraft, setFreeDraft] = useState("");
+  const [freeMsgs, setFreeMsgs] = useState<string[]>([]);
+  const nowStr = () => {
+    const d = new Date();
+    const pad = (n: number) => String(n).padStart(2, "0");
+    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  };
+  const sendFree = () => {
+    const txt = freeDraft.trim();
+    if (!txt || !p.thread) return;
+    setFreeMsgs((prev) => [...prev, `${p.thread!}|${p.owner ?? "我"}|1|${txt}`]);
+    setFreeDraft("");
+    const reply = aiReply(p.thread, txt);
+    if (reply) {
+      setTimeout(
+        () =>
+          setFreeMsgs((prev) => [
+            ...prev,
+            `${p.thread!}|${p.thread}|0|${reply}`,
+          ]),
+        500 + Math.floor(Math.random() * 500),
+      );
+    }
+  };
+  const threadItems = [
+    ...items.filter((i) => i.title === p.thread),
+    ...freeMsgs
+      .filter((r) => r.startsWith(p.thread + "|"))
+      .map((row, n) => {
+        const [, sender, out, ...rest] = row.split("|");
+        return {
+          id: `free-${n}`,
+          title: p.thread!,
+          sender,
+          body: rest.join("|"),
+          kind: "text" as const,
+          time: nowStr(),
+          outgoing: out === "1",
+          richText: "",
+          meta: {},
+          media: "",
+          hidden: false,
+          comments: [] as string[],
+          avatar:
+            sender === p.owner
+              ? undefined
+              : items.find((i) => i.sender === sender)?.avatar,
+        } as Item;
+      }),
+  ];
   return (
     <div className="catalog-skin line-ui">
       <Header
@@ -389,10 +440,37 @@ export function LineSkin(p: Props) {
           <h3 className="line-peer">{p.thread}</h3>
           <Bubbles
             p={p}
-            items={items.filter((i) => i.title === p.thread)}
+            items={threadItems}
             className="line-bubbles"
           />
-          <Composer p={p} />
+          {p.creator ? (
+            <Composer p={p} />
+          ) : (
+            <div className="catalog-composer">
+              <Plus size={19} />
+              <input
+                className="free-input"
+                aria-label="自由對話輸入"
+                value={freeDraft}
+                placeholder="輸入消息…"
+                onChange={(e) => setFreeDraft(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    sendFree();
+                  }
+                }}
+              />
+              <button
+                className="free-send"
+                aria-label="發送"
+                onClick={sendFree}
+              >
+                <Send size={18} />
+              </button>
+              <Mic size={18} />
+            </div>
+          )}
         </>
       ) : (
         <>
