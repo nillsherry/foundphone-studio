@@ -25,7 +25,6 @@ import {
   Menu,
   Compass,
   BadgeCheck,
-  RefreshCw,
   Lock,
   ChevronDown,
 } from "lucide-react";
